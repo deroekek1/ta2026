@@ -10,7 +10,7 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; }
         
-        /* Perbaikan Logo: Menggunakan Flexbox agar sejajar ke samping */
+        /* Perbaikan Layout Logo & Top Bar */
         .top-bar { background-color: #000; color: #fff; padding: 10px 30px; display: flex; justify-content: space-between; align-items: center; }
         .logo-top-left { display: flex; align-items: center; gap: 15px; } 
         .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
@@ -27,7 +27,7 @@
         .table-nota th { padding: 12px; font-size: 0.85rem; text-transform: uppercase; }
         .table-nota td { vertical-align: middle; font-size: 0.85rem; }
 
-        /* PERBAIKAN: Penyelarasan Badge Status Nota */
+        /* Badge Status Nota */
         .badge-status { padding: 5px 12px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; display: inline-block; }
         .bg-bukti { background-color: #d1ecf1; color: #0c5460; }
         .bg-batal { background-color: #f8d7da; color: #721c24; }
@@ -126,41 +126,35 @@
                 document.getElementById('user-aktif').innerText = namaUser;
             }
 
-            // 2. Ambil data pesanan (Sistem Multi-Fallback)
+            // 2. Ambil data pesanan (Sistem Multi-Fallback Kunci)
             let lastOrder = JSON.parse(localStorage.getItem('last_order'));
             let riwayatPelanggan = JSON.parse(localStorage.getItem('riwayat_koko')) || [];
 
-            // Jika last_order kosong, ambil transaksi urutan paling terakhir dari riwayat_koko
             if (!lastOrder && riwayatPelanggan.length > 0) {
                 lastOrder = riwayatPelanggan[riwayatPelanggan.length - 1];
             }
 
             if (lastOrder) {
-                // Ambil database master pembelian admin untuk sinkronisasi status real-time
+                // Ambil master admin untuk sinkronisasi status real-time
                 let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
-                
-                // Ambil pembersihan string No Pesanan
                 let orderIdClean = lastOrder.no_pesanan ? String(lastOrder.no_pesanan).replace('#', '').trim() : "";
                 
-                // Cari status ter-update di master admin
                 const transaksiTerupdate = daftarPembelian.find(item => {
                     let adminNoPesananClean = item.no_pesanan ? String(item.no_pesanan).replace('#', '').trim() : "";
                     if (adminNoPesananClean !== "" && orderIdClean !== "") {
                         return adminNoPesananClean === orderIdClean;
                     }
-                    // Fallback jika no_pesanan belum tercatat
                     return item.nama === (lastOrder.penerima || lastOrder.nama) && item.total === lastOrder.total;
                 });
                 
-                // Dapatkan status valid
-                let statusTerbaru = "Pending";
+                let statusTerbaru = "pending";
                 if (transaksiTerupdate) {
                     statusTerbaru = transaksiTerupdate.status.toLowerCase().trim();
                 } else if (lastOrder.status) {
                     statusTerbaru = lastOrder.status.toLowerCase().trim();
                 }
 
-                // --- LOGIKA BADGE WARNA DINAMIS ---
+                // Pengaturan Class Badge Warna
                 let classBadge = "bg-proses"; 
                 if (statusTerbaru === "sudah kirim bukti" || statusTerbaru === "pending") { 
                     classBadge = "bg-bukti"; 
@@ -168,30 +162,32 @@
                     classBadge = "bg-batal"; 
                 } else if (statusTerbaru === "selesai") { 
                     classBadge = "bg-selesai"; 
-                } else if (statusTerbaru === "diproses" || statusTerbaru === "dalam proses") {
-                    classBadge = "bg-proses";
                 }
 
-                // Render badge status
                 document.getElementById('nota-badge-container').innerHTML = `<span class="badge-status ${classBadge}">${statusTerbaru}</span>`;
 
-                // Pengisian data teks (Mendukung variasi key objek 'penerima' / 'nama')
+                // --- SMART FALLBACK VARIABEL (Mencegah Kolom Kosong) ---
                 const namaTampil = lastOrder.penerima || lastOrder.nama || "-";
-                const waTampil = lastOrder.wa || "-";
+                const waTampil = lastOrder.wa || lastOrder.telepon || "-";
                 const noPesananTampil = lastOrder.no_pesanan || "-";
                 const tanggalTampil = lastOrder.tanggal || "-";
-                const totalTampil = lastOrder.total || "Rp. 0";
-                const produkTampil = lastOrder.produk || "Produk Cetak Custom";
-                const kuantitasTampil = parseInt(lastOrder.jumlah) || 1;
+                const totalTampil = lastOrder.total || "Rp 0";
+                
+                // Mendeteksi kunci nama produk (produk / nama_produk / item / itemCetak)
+                const produkTampil = lastOrder.produk || lastOrder.nama_produk || lastOrder.item || lastOrder.itemCetak || "Produk Cetak Custom";
+                
+                // Mendeteksi kunci kuantitas (jumlah / qty / kuantitas)
+                const kuantitasTampil = parseInt(lastOrder.jumlah) || parseInt(lastOrder.qty) || parseInt(lastOrder.kuantitas) || 1;
 
+                // Render Data Teks Atas
                 document.getElementById('nota-no-pesanan').innerText = "No Pesanan : " + noPesananTampil;
                 document.getElementById('nota-tanggal').innerText = tanggalTampil;
-                document.getElementById('nota-grand-total').innerText = totalTampil;
+                document.getElementById('nota-grand-total').innerText = String(totalTampil).includes("Rp") ? totalTampil : "Rp. " + totalTampil;
                 document.getElementById('nota-nama-pembeli').innerText = namaTampil.toUpperCase();
                 document.getElementById('nota-wa-pembeli').innerText = waTampil;
 
-                // Hitung matematika harga satuan kasar murni
-                const nilaiTotalMurni = parseInt(totalTampil.replace(/[^0-9]/g, '')) || 0;
+                // Hitung Matematika Nilai Harga Satuan Rupiah
+                const nilaiTotalMurni = parseInt(String(totalTampil).replace(/[^0-9]/g, '')) || 0;
                 const hargaSatuanMurni = nilaiTotalMurni / kuantitasTampil;
 
                 const formatter = new Intl.NumberFormat('id-ID', {
@@ -200,23 +196,24 @@
                     minimumFractionDigits: 0
                 });
                 const hargaSatuanFormatted = formatter.format(hargaSatuanMurni).replace(/^(\D+)\s(.*)$/, '$1 $2');
+                const totalFormatted = formatter.format(nilaiTotalMurni).replace(/^(\D+)\s(.*)$/, '$1 $2');
 
-                // Render baris tabel item
+                // Render Baris Tabel Item Cetak
                 const tbody = document.getElementById('nota-item-list');
                 tbody.innerHTML = `
                     <tr>
                         <td>1</td>
-                        <td class="text-start">${produkTampil}</td>
+                        <td class="text-start fw-semibold">${produkTampil}</td>
                         <td class="text-end pe-4">${hargaSatuanFormatted}</td> 
                         <td>${kuantitasTampil} Pcs</td>
-                        <td class="text-end pe-4">${totalTampil}</td>
+                        <td class="text-end pe-4">${totalFormatted}</td>
                     </tr>
                 `;
                 
-                document.getElementById('nota-subtotal').innerText = totalTampil;
+                document.getElementById('nota-subtotal').innerText = totalFormatted;
                 document.getElementById('nota-subtotal').classList.add("text-end", "pe-4");
             } else {
-                document.getElementById('nota-item-list').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-muted">Tidak ada data transaksi yang dapat ditampilkan. Silakan lakukan pemesanan terlebih dahulu.</td></tr>`;
+                document.getElementById('nota-item-list').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-muted">Tidak ada data transaksi yang dapat ditampilkan.</td></tr>`;
             }
         };
     </script>
