@@ -131,7 +131,7 @@
                             LOGIN
                         </button>
                         <div class="text-center small-text">
-                            Belum Ada Akun ? <a href="register.php" class="text-warning-custom fw-bold">Daftar disini</a>
+                            Belum Ada Akun ? <a href="register.html" class="text-warning-custom fw-bold">Daftar disini</a>
                         </div>
                     </form>
                 </div>
@@ -152,14 +152,14 @@
             // 1. Validasi Hardcode Statis untuk Akses Utama Admin
             if (userInput === "admin" && passInput === "admin123") {
                 sessionStorage.setItem('current_user', 'Admin'); 
-                window.location.href = "index_admin.php"; 
+                window.location.href = "index_admin.html"; 
                 return;
             } 
 
             // 2. Validasi Hardcode Statis untuk Simulasi Akun Pelanggan Default
             if (userInput === "pelanggan" && passInput === "pelanggan123") {
                 sessionStorage.setItem('current_user', 'Pelanggan');
-                window.location.href = "index_pelanggan.php"; 
+                window.location.href = "index_pelanggan.html"; 
                 return;
             }
 
@@ -171,7 +171,7 @@
                 if (passInput === akunDitemukan.password) {
                     sessionStorage.setItem('current_user', akunDitemukan.nama); 
                     alert("Login Berhasil! Selamat datang " + akunDitemukan.nama);
-                    window.location.href = "index_pelanggan.php";
+                    window.location.href = "index_pelanggan.html";
                     return;
                 } else {
                     alert("Password yang Anda masukkan salah!");
@@ -187,7 +187,7 @@
                 if (passInput === savedPass) {
                     sessionStorage.setItem('current_user', userInput);
                     alert("Login Berhasil! Selamat datang " + userInput);
-                    window.location.href = "index_pelanggan.php";
+                    window.location.href = "index_pelanggan.html";
                     return;
                 } else {
                     alert("Password hasil registrasi salah!");
