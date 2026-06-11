@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Transaksi - Koko Cetak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
+        
+        /* Sidebar Flex Layout */
+        .sidebar {
+            width: 250px; height: 100vh; background-color: #f7ff00;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000; }
+        .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .logo-container { padding: 20px 0; width: 100%; text-align: center; }
+
+        /* Main Content & Top Bar */
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
+        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-top-left { display: flex; align-items: center; gap: 15px; }
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
+        .admin-text { color: #f7ff00; font-size: 0.85rem; }
+
+        /* Content Area */
+        .content-body { padding: 30px; }
+
+        /* Header Title Melengkung Kuning */
+        .header-title { 
+            background-color: #f7ff00; padding: 12px; text-align: center; 
+            font-weight: 800; border-radius: 10px; width: 50%; 
+            margin: 0 auto 30px; text-transform: uppercase; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
+            color: #000;
+        }
+
+        /* Card Panel Style Mulus */
+        .panel-box { background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 25px; }
+        .panel-header { background-color: #d1d1d1; padding: 12px 20px; font-weight: 700; font-size: 1.1rem; border-bottom: 1px solid #ccc; color: #000; }
+        .panel-body { padding: 25px; }
+
+        /* Stat Card Ringkasan */
+        .card-stat { background: #fdfdfd; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .card-stat .stat-title { font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; }
+        .card-stat .stat-value { font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-top: 5px; }
+
+        /* Styling Tabel Laporan */
+        .table-laporan { width: 100% !important; border-collapse: collapse; }
+        .table-laporan th { font-weight: 700; color: #333; font-size: 0.9rem; border-bottom: 2px solid #cbd5e1 !important; padding: 12px 10px; text-align: center !important; background-color: #e2e8f0; }
+        .table-laporan td { vertical-align: middle; font-size: 0.88rem; color: #475569; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; }
+
+        /* Custom Buttons */
+        .btn-filter { background-color: #000; color: #f7ff00; font-weight: 700; font-size: 0.9rem; border: none; padding: 10px 20px; border-radius: 6px; text-transform: uppercase; }
+        .btn-filter:hover { background-color: #333; }
+        .btn-cetak { background-color: #28a745; color: #fff; font-weight: 700; font-size: 0.9rem; border: none; padding: 10px 20px; border-radius: 6px; text-transform: uppercase; text-decoration: none; display: inline-block; text-align: center; }
+        .btn-cetak:hover { background-color: #218838; color: #fff; }
+        
+        /* TOMBOL EXCEL BARU */
+        .btn-excel { background-color: #1d6f42; color: #fff; font-weight: 700; font-size: 0.9rem; border: none; padding: 10px 20px; border-radius: 6px; text-transform: uppercase; text-decoration: none; display: inline-block; text-align: center; }
+        .btn-excel:hover { background-color: #155231; color: #fff; }
+
+        /* Custom Override Pagination DataTables */
+        .page-item.active .page-link { background-color: #000 !important; border-color: #000 !important; color: #f7ff00 !important; }
+        .page-link { color: #000; }
+
+        /* ==================== PRINT MEDIA STYLING (ANTI-BERANTAKAN) ==================== */
+        @media print {
+            body { background-color: #fff; color: #000; font-size: 12px; }
+            .sidebar, .top-bar, #formFilter, .dataTables_length, .dataTables_filter, .dataTables_info, .dataTables_paginate, hr {
+                display: none !important;
+            }
+            .main-content { margin-left: 0 !important; width: 100% !important; padding: 0 !important; }
+            .content-body { padding: 0 !important; }
+            .panel-box { border: none !important; box-shadow: none !important; margin-bottom: 15px !important; }
+            .panel-header { background-color: #f5f5f5 !important; color: #000 !important; border: 1px solid #ddd !important; }
+            .panel-body { padding: 15px 0 !important; }
+            .header-title { background-color: transparent !important; color: #000 !important; border: none !important; box-shadow: none !important; font-size: 1.8rem !important; margin-bottom: 20px !important; }
+            .table-laporan th { background-color: #eaeaea !important; color: #000 !important; border: 1px solid #aaa !important; }
+            .table-laporan td { border: 1px solid #ddd !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow">
+    <div>
+        <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="index_admin.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="produk_admin.php"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pembelian_admin.php"><i class="bi bi-cart3"></i> Pembelian</a>
+            <a class="nav-link" href="pelanggan.php"><i class="bi bi-people"></i> Pelanggan</a>
+            <a class="nav-link active" href="laporan.php"><i class="bi bi-journal-text"></i> Laporan</a>
+            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+        </nav>
+    </div>
+    <div class="logo-container">
+        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="top-bar shadow-sm">
+        <div class="logo-top-left">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55" alt="Logo">
+            <h5>KOKO CETAK UV PRINTING</h5>
+        </div>
+        <div class="admin-text">
+            Selamat Datang <span id="user-aktif">Admin</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <div class="header-title">LAPORAN TRANSAKSI</div>
+
+        <div class="panel-box">
+            <div class="panel-header">Filter Periode Laporan</div>
+            <div class="panel-body">
+                <form id="formFilter" class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold" for="tgl_mulai">Tanggal Mulai</label>
+                        <input type="date" id="tgl_mulai" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold" for="tgl_selesai">Tanggal Selesai</label>
+                        <input type="date" id="tgl_selesai" class="form-control">
+                    </div>
+                    <div class="col-md-6 d-flex gap-2">
+                        <button type="button" onclick="filterSimulasi()" class="btn-filter flex-grow-1"><i class="bi bi-funnel-fill me-1"></i> Filter</button>
+                        <button type="button" onclick="exportKeExcel()" class="btn-excel"><i class="bi bi-file-earmark-excel-fill me-1"></i> Excel</button>
+                        <button type="button" onclick="window.print()" class="btn-cetak"><i class="bi bi-printer-fill me-1"></i> Cetak</button>
+                    </div>
+                </form>
+
+                <hr class="my-4" style="color: #ccc;">
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card-stat border-start border-4 border-success">
+                            <div class="stat-title">Total Omset (Selesai)</div>
+                            <div id="stat-omset" class="stat-value text-success">Rp 0</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-stat border-start border-4 border-primary">
+                            <div class="stat-title">Jumlah Transaksi Berhasil</div>
+                            <div id="stat-transaksi" class="stat-value text-primary">0 Transaksi</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel-box">
+            <div class="panel-header">Rekapitulasi Transaksi Pembelian</div>
+            <div class="panel-body">
+                
+                <div class="table-responsive">
+                    <table id="tabelLaporan" class="table table-hover table-laporan">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="35%">Nama Pelanggan</th>
+                                <th width="20%">Tanggal</th>
+                                <th width="20%">Total Penjualan</th>
+                                <th width="20%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-laporan-body"></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+    let dTable = null; 
+    let dataTerfilterGlobal = []; 
+
+    $(document).ready(function () {
+        // 1. Inisialisasi awal DataTables Engine secara permanen
+        dTable = $('#tabelLaporan').DataTable({
+            "pageLength": 5, 
+            "lengthMenu": [5, 10, 25, 50],
+            "ordering": false,
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                "paginate": { "previous": "Sebelumnya", "next": "Selanjutnya" }
+            }
+        });
+
+        let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+
+        // 2. Pasang Tanggal Default Otomatis (Awal bulan s/d hari ini)
+        const hariIni = new Date();
+        const tahun = hariIni.getFullYear();
+        const bulan = String(hariIni.getMonth() + 1).padStart(2, '0');
+        const tanggalHariIni = String(hariIni.getDate()).padStart(2, '0');
+        
+        document.getElementById('tgl_mulai').value = `${tahun}-${bulan}-01`;
+        document.getElementById('tgl_selesai').value = `${tahun}-${bulan}-${tanggalHariIni}`;
+
+        // 3. Muat Data Utama
+        dataTerfilterGlobal = [...daftarPembelian]; 
+        renderDataKeTabel(dataTerfilterGlobal);
+
+        const namaUser = sessionStorage.getItem('current_user') || "Admin";
+        document.getElementById('user-aktif').innerText = namaUser;
+    });
+
+    // 4. Proses Rendering Menggunakan DataTables API Row.Add (Lebih Stabil & Cepat)
+    function renderDataKeTabel(dataArray) {
+        hitungStatistik(dataArray);
+
+        // Kosongkan cache internal engine DataTables
+        dTable.clear();
+
+        dataArray.forEach((item, index) => {
+            const nomor = index + 1;
+            const statusAmandemen = item.status ? item.status.toLowerCase().trim() : 'dalam proses';
+            
+            let badgeClass = 'bg-warning text-dark';
+            if (statusAmandemen === 'selesai') {
+                badgeClass = 'bg-success text-white';
+            } else if (statusAmandemen === 'dibatalkan') {
+                badgeClass = 'bg-danger text-white';
+            } else if (statusAmandemen === 'sudah kirim bukti') {
+                badgeClass = 'bg-info text-white';
+            }
+
+            const namaPelanggan = item.nama ? item.nama : '-';
+            const tanggalTransaksi = item.tanggal ? item.tanggal : '-';
+            const totalBayar = item.total ? item.total : 'Rp 0';
+
+            // Masukkan data baris demi baris lewat API resmi DataTables
+            dTable.row.add([
+                `<div class="text-center fw-bold">${nomor}</div>`,
+                `<div><i class="bi bi-person-fill me-2 text-secondary"></i>${namaPelanggan}</div>`,
+                `<div class="text-center">${tanggalTransaksi}</div>`,
+                `<div class="text-end pe-4 fw-semibold text-danger">${totalBayar}</div>`,
+                `<div class="text-center"><span class="badge ${badgeClass}">${statusAmandemen.toUpperCase()}</span></div>`
+            ]);
+        });
+
+        // Gambar ulang visualisasi tabel
+        dTable.draw(false);
+    }
+
+    // 5. Hitung Statistik dengan Sistem Penanganan String Null-Safety
+    function hitungStatistik(data) {
+        let totalOmset = 0;
+        let jumlahSukses = 0;
+
+        data.forEach(item => {
+            if (item.status && item.status.toLowerCase().trim() === "selesai") {
+                jumlahSukses++;
+                // Casting ke String terlebih dahulu untuk menghindari crash jika data bertipe integer murni
+                const totalString = item.total ? String(item.total) : "0";
+                const angkaMurni = parseInt(totalString.replace(/[^0-9]/g, '')) || 0;
+                totalOmset += angkaMurni;
+            }
+        });
+
+        const formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        });
+
+        document.getElementById('stat-omset').innerText = formatter.format(totalOmset).replace("IDR", "Rp");
+        document.getElementById('stat-transaksi').innerText = jumlahSukses + " Transaksi";
+    }
+
+    // 6. Penerjemah Format Tanggal Indonesia ke Objek Tanggal Javascript murni
+    function parseTanggalIndoInggris(dateStr) {
+        if(!dateStr) return new Date();
+        const dateStrClean = String(dateStr).trim();
+        if(dateStrClean.includes('-')) return new Date(dateStrClean); 
+        
+        const parts = dateStrClean.split(' ');
+        if(parts.length < 3) return new Date(dateStrClean); 
+
+        const day = parseInt(parts[0]);
+        const monthName = parts[1].toLowerCase();
+        const year = parseInt(parts[2]);
+
+        const months = {
+            january:0, januari:0, february:1, februari:1, march:2, maret:2, 
+            april:3, may:4, mei:4, june:5, juni:5, july:6, juli:6, 
+            august:7, agustus:7, september:8, oktober:9, october:9,
+            november:10, desember:11, december:11
+        };
+
+        const month = months[monthName] !== undefined ? months[monthName] : 0;
+        return new Date(year, month, day);
+    }
+
+    // 7. Aksi Filter Data
+    function filterSimulasi() {
+        const tglMulai = document.getElementById('tgl_mulai').value;
+        const tglSelesai = document.getElementById('tgl_selesai').value;
+
+        if (!tglMulai || !tglSelesai) {
+            alert("Harap tentukan tanggal mulai dan tanggal selesai!");
+            return;
+        }
+
+        let dataAsli = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+
+        const dateMulai = new Date(tglMulai);
+        const dateSelesai = new Date(tglSelesai);
+        
+        dateMulai.setHours(0,0,0,0);
+        dateSelesai.setHours(23,59,59,999);
+
+        dataTerfilterGlobal = dataAsli.filter(item => {
+            if (!item.tanggal) return false;
+            const dateItem = parseTanggalIndoInggris(item.tanggal);
+            return dateItem >= dateMulai && dateItem <= dateSelesai;
+        });
+
+        renderDataKeTabel(dataTerfilterGlobal);
+    }
+
+    // 8. Fungsi Export Excel
+    function exportKeExcel() {
+        if (dataTerfilterGlobal.length === 0) {
+            alert("Tidak ada data transaksi yang dapat diexport!");
+            return;
+        }
+
+        let excelRows = [
+            ["LAPORAN TRANSAKSI PENJUALAN - KOKO CETAK"],
+            ["Periode: " + document.getElementById('tgl_mulai').value + " s/d " + document.getElementById('tgl_selesai').value],
+            [], 
+            ["No", "Nama Pelanggan", "Tanggal Transaksi", "Total Penjualan", "Status Pembayaran"]
+        ];
+
+        dataTerfilterGlobal.forEach((item, index) => {
+            excelRows.push([
+                index + 1,
+                item.nama || '-',
+                item.tanggal || '-',
+                item.total || 'Rp 0',
+                item.status ? item.status.toUpperCase() : 'DALAM PROSES'
+            ]);
+        });
+
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.aoa_to_sheet(excelRows);
+
+        ws['!cols'] = [
+            { wch: 6 },  
+            { wch: 28 }, 
+            { wch: 20 }, 
+            { wch: 22 }, 
+            { wch: 20 }  
+        ];
+
+        XLSX.utils.book_append_sheet(wb, ws, "Laporan Transaksi");
+        XLSX.writeFile(wb, "Laporan_Transaksi_KokoCetak.xlsx");
+    }
+</script>
+</body>
+</html>

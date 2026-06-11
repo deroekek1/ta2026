@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Produk - Koko Cetak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
+        
+        /* Sidebar Responsive & Flex Layout */
+        .sidebar {
+            width: 250px; height: 100vh; background-color: #f7ff00;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000; }
+        .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .logo-container { padding: 20px 0; width: 100%; text-align: center; }
+
+        /* Main Content & Top Bar */
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
+        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-top-left { display: flex; align-items: center; gap: 15px; }
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
+        .admin-text { color: #f7ff00; font-size: 0.85rem; }
+
+        /* Content Area */
+        .content-body { padding: 30px; }
+        
+        /* Header Title PRODUK */
+        .header-title { 
+            background-color: #f7ff00; padding: 12px; text-align: center; 
+            font-weight: 800; border-radius: 10px; width: 50%; 
+            margin: 0 auto 30px; text-transform: uppercase; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px; color: #000;
+        }
+
+        /* Panel Box Data Produk */
+        .panel-box { background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; }
+        .panel-header { background-color: #d1d1d1; padding: 12px 20px; font-weight: 700; font-size: 1.1rem; border-bottom: 1px solid #ccc; color: #000; }
+        .panel-body { padding: 25px; }
+
+        /* Button Tambah Produk */
+        .btn-add-product { background-color: #f7ff00; color: #000; font-weight: 700; border: none; padding: 8px 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-decoration: none; display: inline-block; }
+        .btn-add-product:hover { background-color: #e9f500; color: #000; }
+
+        /* Custom Table Styling */
+        .table-custom { border: 1px solid #ccc; }
+        .table-custom th { background-color: #fff; color: #000; font-weight: 700; padding: 12px; vertical-align: middle; border: 1px solid #ccc; text-align: center !important; }
+        .table-custom td { padding: 12px; border: 1px solid #ccc; font-size: 0.9rem; text-align: left; vertical-align: top; color: #333; }
+        .table-custom td.center-align { text-align: center; vertical-align: middle; }
+
+        /* Action Buttons Minimalis */
+        .btn-action { width: 100px; font-weight: 800; font-size: 0.8rem; padding: 6px; border-radius: 20px; margin-bottom: 8px; border: none; display: block; margin-left: auto; margin-right: auto; text-transform: uppercase; text-align: center; text-decoration: none; }
+        .btn-edit { background-color: #2ecc71; color: #fff; }
+        .btn-detail { background-color: #001eff; color: #fff; }
+        .btn-hapus { background-color: #ff0000; color: #fff; }
+        .btn-action:hover { opacity: 0.85; color: #fff; }
+        
+        .product-img-thum { width: 130px; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #ddd; padding: 3px; background: #fff; }
+        .desc-text ul { padding-left: 20px; margin-top: 5px; margin-bottom: 5px; list-style-type: disc; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow">
+    <div>
+        <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="index_admin.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link active" href="produk_admin.php"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pembelian_admin.php"><i class="bi bi-cart3"></i> Pembelian</a>
+            <a class="nav-link" href="pelanggan.php"><i class="bi bi-people"></i> Pelanggan</a>
+            <a class="nav-link" href="laporan.php"><i class="bi bi-journal-text"></i> Laporan</a>
+            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+        </nav>
+    </div>
+    <div class="logo-container">
+        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="top-bar shadow-sm">
+        <div class="logo-top-left">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55">
+            <h5>KOKO CETAK UV PRINTING</h5>
+        </div>
+        <div class="admin-text">
+            Selamat Datang <span id="user-aktif">Admin</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <div class="header-title">PRODUK</div>
+
+        <div class="panel-box">
+            <div class="panel-header">Data Produk</div>
+            <div class="panel-body">
+                
+                <a href="tmbh_produk_admin.php" class="btn-add-product"><i class="bi bi-plus-lg me-1"></i> Tambah Produk</a>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-custom">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="20%">Nama Barang</th>
+                                <th width="12%">Harga</th>
+                                <th width="18%">Foto</th>
+                                <th width="33%">Deskripsi</th>
+                                <th width="12%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-produk-body">
+                            </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data bawaan awal (Fallback) terintegrasi ID unik murni
+    const produkAwalSistem = [
+        {
+            id: 1,
+            nama: "E-toll Emoney Custom Print",
+            harga: 60000,
+            gambar: "img/emon.png",
+            rating: "4.9",
+            terjual: "6RB+",
+            deskripsi: "Jenis Kartu: E-Money<br>Catatan:<br><ul><li>Saldo Rp. 0,-</li><li>Gratis Plastik Kartu</li></ul>Proses Cetak: UV Printing (BUKAN menggunakan stiker/garskin, jadi gambar lebih tajam, berkualitas, bertekstur & tahan lama)<br>Kegunaan E-toll untuk pembayaran:<br><ul><li>Toll</li><li>Parkir</li><li>Tempat hiburan</li><li>SPBU</li><li>Pembayaran transportasi umum: transjakarta, angkot Jak lingko, kereta, dll.</li><li>Belanja dan pembayaran umum seperti di indomaret/alfamart, dsb.</li></ul>"
+        }
+    ];
+
+    // Fungsi menampilkan semua daftar produk dari database lokal
+    function muatSemuaProduk() {
+        let daftarProduk = JSON.parse(localStorage.getItem('daftar_produk'));
+        
+        // Jika belum ada data produk sama sekali di localStorage, pasang data default
+        if (!daftarProduk || daftarProduk.length === 0) {
+            localStorage.setItem('daftar_produk', JSON.stringify(produkAwalSistem));
+            daftarProduk = produkAwalSistem;
+        }
+
+        const tbody = document.getElementById('tabel-produk-body');
+        tbody.innerHTML = ""; 
+
+        daftarProduk.forEach((item, index) => {
+            const nomorBaris = index + 1; 
+            // Pastikan item memiliki ID, jika tidak gunakan fallback timestamp/nomor baris aman
+            const idBarang = item.id || (new Date().getTime() + index);
+            if (!item.id) { item.id = idBarang; } // Auto-repair objek data tanpa ID
+
+            // Format Harga standard Rupiah Indonesia
+            const formatHarga = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(item.harga || 0);
+
+            const pathFoto = item.gambar || item.foto || "img/emon.png";
+            
+            let deskripsiFix = item.deskripsi || "";
+            if (!deskripsiFix.includes('<br>') && !deskripsiFix.includes('<li>')) {
+                deskripsiFix = deskripsiFix.replace(/\n/g, '<br>');
+            }
+
+            const barisHTML = document.createElement('tr');
+            barisHTML.innerHTML = `
+                <td class=" fw-bold">${nomorBaris}</td>
+                <td class=" fw-bold">${item.nama || item.nama_produk}</td>
+                <td class=" fw-bold text-danger">${formatHarga}</td>
+                <td class="">
+                    <img src="${pathFoto}" class="product-img-thum shadow-sm" alt="Foto Produk" onerror="this.onerror=null; this.src='img/emon.png';">
+                </td>
+                <td class="desc-text">${deskripsiFix}</td>
+                <td class="#">
+                    <a href="edit_produk_admin.php?id=${idBarang}" class="btn-action btn-edit">EDIT</a>
+                    <a href="detail_produk_admin.php?id=${idBarang}" class="btn-action btn-detail">DETAIL</a>
+                    <button class="btn-action btn-hapus" onclick="hapusProdukByUniqueId('${idBarang}')">HAPUS</button>
+                </td>
+            `;
+            tbody.appendChild(barisHTML);
+        });
+
+        // Simpan ulang modifikasi auto-repair ID jika ada yang berubah
+        localStorage.setItem('daftar_produk', JSON.stringify(daftarProduk));
+    }
+
+    // PERBAIKAN SELEKTOR HAPUS: Mencari berdasarkan nilai ID murni (Aman dari bug shifting baris array)
+    function hapusProdukByUniqueId(idTarget) {
+        if (confirm("Apakah Anda yakin ingin menghapus produk ini dari daftar? Data pada halaman katalog pelanggan juga akan otomatis terupdate.")) {
+            let daftarProduk = JSON.parse(localStorage.getItem('daftar_produk')) || [];
+            
+            // Cari index baris data yang memiliki nilai properti id sama dengan idTarget
+            const indexData = daftarProduk.findIndex(item => item.id.toString() === idTarget.toString());
+            
+            if (indexData !== -1) {
+                daftarProduk.splice(indexData, 1); // Hapus 1 baris item terpilih
+                localStorage.setItem('daftar_produk', JSON.stringify(daftarProduk));
+                muatSemuaProduk(); // Render ulang tabel secara instan
+            } else {
+                alert("Gagal menghapus! Data ID Produk tidak dikenali.");
+            }
+        }
+    }
+
+    window.onload = function() {
+        // Sinkronisasi Nama Admin Aktif dari Session Storage
+        const namaUser = sessionStorage.getItem('current_user');
+        if (namaUser) {
+            document.getElementById('user-aktif').innerText = namaUser;
+        }
+
+        // Panggil fungsi render data utama
+        muatSemuaProduk();
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

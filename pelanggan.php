@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pelanggan - Koko Cetak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
+        
+        /* Sidebar Flex Layout */
+        .sidebar {
+            width: 250px; height: 100vh; background-color: #f7ff00;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; }
+        .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .logo-container { padding: 20px 0; width: 100%; text-align: center; }
+
+        /* Main Content & Top Bar */
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
+        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-top-left { display: flex; align-items: center; gap: 15px; }
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
+        .admin-text { color: #f7ff00; font-size: 0.85rem; }
+
+        /* Content Area */
+        .content-body { padding: 30px; }
+
+        /* Header Title Melengkung Kuning */
+        .header-title { 
+            background-color: #f7ff00; padding: 12px; text-align: center; 
+            font-weight: 800; border-radius: 10px; width: 50%; 
+            margin: 0 auto 30px; text-transform: uppercase; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
+            color: #000;
+        }
+
+        /* Card Panel Style Mulus */
+        .panel-box { background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; }
+        .panel-header { background-color: #d1d1d1; padding: 12px 20px; font-weight: 700; font-size: 1.1rem; border-bottom: 1px solid #ccc; color: #000; display: flex; justify-content: space-between; align-items: center; }
+        .panel-body { padding: 25px; }
+
+        /* Styling Tabel Pelanggan */
+        .table-pelanggan { width: 100% !important; border-collapse: collapse; }
+        .table-pelanggan th { font-weight: 700; color: #333; font-size: 0.9rem; border-bottom: 2px solid #cbd5e1 !important; padding: 12px 10px; text-align: center !important; }
+        .table-pelanggan td { vertical-align: middle; font-size: 0.88rem; color: #475569; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; }
+
+        /* Button Action Minimalis */
+        .btn-action { font-size: 0.85rem; font-weight: 600; padding: 5px 12px; border-radius: 4px; transition: 0.2s; text-decoration: none; display: inline-block; text-align: center; width: 75px; }
+        .btn-edit { background-color: #2ecc71; color: #fff; }
+        .btn-edit:hover { opacity: 0.85; color: #fff; }
+        .btn-hapus { background-color: #ff0000; color: #fff; border: none; }
+        .btn-hapus:hover { opacity: 0.85; color: #fff; }
+        
+        /* TOMBOL RESET DATABASE */
+        .btn-reset-db { font-weight: 600; font-size: 0.82rem; padding: 6px 15px; border-radius: 6px; text-transform: uppercase; }
+
+        /* Custom Override Pagination DataTables */
+        .page-item.active .page-link { background-color: #007bff !important; border-color: #007bff !important; color: #fff !important; }
+        .page-link { color: #007bff; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow">
+    <div>
+        <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="index_admin.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="produk_admin.php"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pembelian_admin.php"><i class="bi bi-cart3"></i> Pembelian</a>
+            <a class="nav-link active" href="pelanggan.php"><i class="bi bi-people"></i> Pelanggan</a>
+            <a class="nav-link" href="laporan.php"><i class="bi bi-journal-text"></i> Laporan</a>
+            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+        </nav>
+    </div>
+    <div class="logo-container">
+        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="top-bar shadow-sm">
+        <div class="logo-top-left">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55">
+            <h5>KOKO CETAK UV PRINTING</h5>
+        </div>
+        <div class="admin-text">
+            Selamat Datang <span id="user-aktif">Admin</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <div class="header-title">PELANGGAN</div>
+
+        <div class="panel-box">
+            <div class="panel-header">
+                <span>Data Pelanggan</span>
+                <button type="button" onclick="resetSemuaData()" class="btn btn-danger btn-reset-db"><i class="bi bi-trash3-fill me-1"></i> Reset Database</button>
+            </div>
+            <div class="panel-body">
+                
+                <div class="table-responsive">
+                    <table id="tabelPelanggan" class="table table-hover table-pelanggan">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="30%">Nama Pelanggan</th>
+                                <th width="25%">Email</th>
+                                <th width="20%">Telepon / No. HP</th>
+                                <th width="20%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-pelanggan-body">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        let daftarPelanggan = JSON.parse(localStorage.getItem('daftar_pelanggan_koko'));
+        
+        if (!daftarPelanggan) {
+            daftarPelanggan = [];
+            localStorage.setItem('daftar_pelanggan_koko', JSON.stringify(daftarPelanggan));
+        }
+
+        renderTabelPelanggan(daftarPelanggan);
+
+        $('#tabelPelanggan').DataTable({
+            "pageLength": 5, 
+            "lengthMenu": [5, 10, 25, 50],
+            "ordering": false,
+            "language": {
+                "search": "Search:",
+                "lengthMenu": "Show _MENU_ entries",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "paginate": { "previous": "Previous", "next": "Next" }
+            }
+        });
+
+        const namaUser = sessionStorage.getItem('current_user');
+        if (namaUser) {
+            document.getElementById('user-aktif').innerText = namaUser;
+        }
+    });
+
+    function renderTabelPelanggan(data) {
+        const tbody = document.getElementById('tabel-pelanggan-body');
+        tbody.innerHTML = ""; 
+
+        data.forEach((item, index) => {
+            const nomor = index + 1;
+            const barisHTML = `
+                <tr>
+                    <td class="text-center fw-bold">${nomor}</td>
+                    <td>${item.nama}</td>
+                    <td>${item.email}</td>
+                    <td class="text-center">${item.telepon}</td>
+                    <td class="text-center">
+                        <div class="d-flex gap-1 justify-content-center">
+                            <a href="edit_pelanggan.php?id=${index}" class="btn-action btn-edit">EDIT</a>
+                            <button type="button" onclick="hapusPelanggan(${index})" class="btn-action btn-hapus">HAPUS</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += barisHTML;
+        });
+    }
+
+    function hapusPelanggan(index) {
+        if (confirm("Apakah Anda yakin ingin menghapus data pelanggan ini beserta seluruh riwayat transaksinya?")) {
+            let daftarPelanggan = JSON.parse(localStorage.getItem('daftar_pelanggan_koko')) || [];
+            const namaTarget = daftarPelanggan[index].nama;
+
+            daftarPelanggan.splice(index, 1);
+            localStorage.setItem('daftar_pelanggan_koko', JSON.stringify(daftarPelanggan));
+
+            let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+            daftarPembelian = daftarPembelian.filter(pembelian => pembelian.nama !== namaTarget);
+            localStorage.setItem('daftar_pembelian_koko', JSON.stringify(daftarPembelian));
+
+            let riwayatKoko = JSON.parse(localStorage.getItem('riwayat_koko')) || [];
+            riwayatKoko = riwayatKoko.filter(riwayat => riwayat.penerima !== namaTarget);
+            localStorage.setItem('riwayat_koko', JSON.stringify(riwayatKoko));
+
+            window.location.reload();
+        }
+    }
+
+    // TAMBAHAN FUNCTION: Logika mengosongkan LocalStorage agar database simulasi bersih total saat demo program
+    function resetSemuaData() {
+        if (confirm("PERINGATAN! Apakah Anda yakin ingin mengosongkan seluruh data akun pelanggan beserta riwayat transaksinya dari sistem?")) {
+            localStorage.removeItem('daftar_pelanggan_koko');
+            localStorage.removeItem('daftar_pembelian_koko');
+            localStorage.removeItem('riwayat_koko');
+            localStorage.removeItem('last_order');
+            
+            alert("Sistem berhasil dibersihkan! Semua data kembali kosong untuk pengujian baru.");
+            window.location.reload();
+        }
+    }
+</script>
+</body>
+</html>

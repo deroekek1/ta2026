@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemesanan - Koko Cetak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
+        
+        /* ==================== SINKRONISASI PERFECT SIDEBAR ==================== */
+        .sidebar {
+            width: 250px; height: 100vh; background-color: #f7ff00;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand { 
+            text-align: center; font-weight: 800; font-size: 1.1rem; 
+            padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; 
+            border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000;
+        }
+        .sidebar-menu-container { margin-top: 20px; }
+        .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .logo-container { padding: 20px 0; width: 100%; text-align: center; }
+        /* ========================================================================== */
+
+        /* Main Content & Top Bar */
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
+        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
+        .welcome-user { color: #f7ff00; font-size: 0.85rem; }
+
+        /* Content Area */
+        .content-body { padding: 30px; }
+        .header-title {
+            background-color: #f7ff00; padding: 12px; text-align: center; font-weight: 800;
+            border-radius: 10px; width: 100%; margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-transform: uppercase; color: #000;
+            font-size: 1.4rem; letter-spacing: 1px;
+        }
+
+        /* Card Layout */
+        .order-card { background: #fff; border-radius: 15px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .form-label { font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: #333; }
+        .form-control, .form-select { border-radius: 8px; padding: 10px; border: 1px solid #ccc; font-size: 0.95rem; }
+        
+        .summary-box { background-color: #f8f9fa; border-radius: 10px; padding: 20px; border: 1px dashed #ccc; }
+        
+        /* Info Box QRIS Vertikal Tengah */
+        .bank-info-box {
+            background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 15px;
+            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px;
+        }
+        .bank-logo { width: 180px; height: auto; object-fit: contain; border-radius: 6px; border: 1px solid #edf2f7; padding: 4px; }
+        .bank-details { width: 100%; }
+        .bank-details .bank-name { font-size: 1.15rem; font-weight: 800; color: #0a4da3; margin-bottom: 2px; }
+        .bank-details .bank-owner { font-size: 0.95rem; font-weight: 600; color: #475569; }
+
+        .btn-order {
+            background-color: #000; color: #f7ff00; font-weight: 800; border: none;
+            padding: 12px; width: 100%; border-radius: 10px; margin-top: 20px;
+            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-order:hover { background-color: #333; color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow">
+    <div>
+        <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
+        <nav class="nav flex-column sidebar-menu-container">
+            <a class="nav-link" href="index_pelanggan.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="list_produk.php"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link active" href="pemesanan.php"><i class="bi bi-cart3"></i> Pemesanan</a>
+            <a class="nav-link" href="riwayat.php"><i class="bi bi-journal-text"></i> Riwayat Pesanan</a>
+            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+        </nav>
+    </div>
+    <div class="logo-container">
+        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="top-bar shadow-sm">
+        <h5>KOKO CETAK UV PRINTING</h5>
+        <div class="welcome-user">
+            Selamat Datang <span id="user-aktif">Pelanggan</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <div class="header-title">FORM PEMESANAN</div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="order-card">
+                    <h6 class="fw-bold mb-4"><i class="bi bi-info-circle me-2"></i>Informasi Pesanan</h6>
+                    <form id="formOrder" onsubmit="simpanKeRiwayat(event)">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Nama Lengkap Penerima</label>
+                                <input type="text" id="penerima" class="form-control bg-light" placeholder="Nama Akun" readonly required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Nomor WhatsApp</label>
+                                <input type="text" id="wa" class="form-control" placeholder="08xxxxxxxxx" pattern="[0-9]+" title="Harap masukkan nomor WhatsApp yang valid (hanya angka)" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Pilih Produk</label>
+                                <select id="produk" class="form-select" onchange="hitungOtomatis()">
+                                    <option value="60000">E-money Mandiri 1 Sisi (Rp 60.000)</option>
+                                    <option value="70000">E-money Mandiri 2 Sisi (Rp 70.000)</option>
+                                    <option value="70000">Flazz BCA 1 Sisi (Rp 70.000)</option>
+                                    <option value="80000">Flazz BCA 2 Sisi (Rp 80.000)</option>
+                                    <option value="15000">Tali Lanyard 1 Sisi (Rp 15.000)</option>
+                                    <option value="20000">Tali Lanyard 2 Sisi (Rp 20.000)</option>
+                                    <option value="6000">Kartu PVC 1 Sisi (Rp 6.000)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Jumlah (Qty)</label>
+                                <input type="number" id="qty" class="form-control" value="1" min="1" oninput="hitungOtomatis()" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Catatan</label>
+                                <textarea id="catatan" class="form-control" rows="3" placeholder="Masukkan Catatan..."></textarea>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">Upload Desain</label>
+                                <input type="file" id="file-desain-input" class="form-control" accept="image/*" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Upload Bukti Bayar</label>
+                                <input type="file" id="file-bukti-input" class="form-control" accept="image/*" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-order d-none" id="btn-submit-hidden"></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="order-card shadow-sm">
+                    <h6 class="fw-bold mb-3">Ringkasan Pembayaran</h6>
+                    
+                    <div class="bank-info-box shadow-sm">
+                        <img src="img/qris.jpg" class="bank-logo shadow-sm" alt="QRIS Pembayaran" onerror="this.src='https://placehold.co/200x250?text=Scan+QRIS'">
+                        <div class="bank-details">
+                            <div class="bank-name"><i class="bi bi-wallet2 me-1"></i> BANK BCA</div>
+                            <div class="bank-owner">a.n. Koko Cetak Printing</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="d-flex justify-content-between">
+                            <span>Subtotal:</span>
+                            <span id="display-subtotal">Rp 0</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold text-danger">
+                            <span>Total Bayar:</span>
+                            <span id="display-total">Rp 0</span>
+                        </div>
+                    </div>
+                    
+                    <button type="button" onclick="triggerFormSubmit()" class="btn-order">KONFIRMASI PESANAN</button>
+                    
+                    <small class="text-center d-block mt-3 text-muted">
+                        <i class="bi bi-shield-check"></i> Pembayaran aman & terverifikasi
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Variabel global penampung nilai integer murni
+    let totalHargaMurni = 0;
+
+    function hitungOtomatis() {
+        const harga = parseInt(document.getElementById('produk').value) || 0;
+        const jumlah = parseInt(document.getElementById('qty').value) || 0;
+        totalHargaMurni = harga * jumlah;
+
+        const formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        });
+
+        const formattedPrice = formatter.format(totalHargaMurni).replace(/^(\D+)\s(.*)$/, '$1 $2');
+
+        document.getElementById('display-subtotal').innerText = formattedPrice;
+        document.getElementById('display-total').innerText = formattedPrice;
+    }
+
+    function triggerFormSubmit() {
+        document.getElementById('btn-submit-hidden').click();
+    }
+
+    function simpanKeRiwayat(event) {
+        event.preventDefault(); // Menghentikan reload halaman bawaan form
+
+        const penerima = document.getElementById('penerima').value;
+        const wa = document.getElementById('wa').value;
+        const produkElement = document.getElementById('produk');
+        const namaProduk = produkElement.options[produkElement.selectedIndex].text.split(' (')[0];
+        const qty = parseInt(document.getElementById('qty').value);
+        const catatan = document.getElementById('catatan').value;
+
+        const now = new Date();
+        const idPesanan = "#KC-" + now.getTime().toString().slice(-6);
+
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const day = String(now.getDate()).padStart(2, '0');
+        const monthStr = months[now.getMonth()];
+        const year = now.getFullYear();
+        const tanggalFormatted = `${day} ${monthStr} ${year}`;
+
+        const fileDesain = document.getElementById('file-desain-input').files[0];
+        const fileBukti = document.getElementById('file-bukti-input').files[0];
+
+        const konversiBase64 = (file) => {
+            return new Promise((resolve) => {
+                if (!file) resolve(null);
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // Mengubah visual tombol saat proses konversi file biner berjalan
+        const btnKonfirmasi = document.querySelector('.btn-order[onclick="triggerFormSubmit()"]');
+        btnKonfirmasi.innerText = "Memproses...";
+        btnKonfirmasi.disabled = true;
+
+        Promise.all([konversiBase64(fileDesain), konversiBase64(fileBukti)]).then(([base64Desain, base64Bukti]) => {
+            
+            // PERBAIKAN: Field total diisi integer angka murni, bukan teks rupiah agar aman dihitung di sisi admin
+            const pesananBaruDetail = {
+                no_pesanan: idPesanan,
+                penerima: penerima,
+                wa: wa,
+                produk: namaProduk,
+                jumlah: qty,
+                total: totalHargaMurni, 
+                tanggal: tanggalFormatted,
+                catatan: catatan,
+                status: "dalam proses",
+                gambar_desain: base64Desain,
+                gambar_bukti: base64Bukti
+            };
+
+            // Simpan ke riwayat_koko
+            let riwayat = JSON.parse(localStorage.getItem('riwayat_koko')) || [];
+            riwayat.push(pesananBaruDetail);
+            localStorage.setItem('riwayat_koko', JSON.stringify(riwayat));
+
+            // Simpan untuk invoice/nota terakhir
+            localStorage.setItem('last_order', JSON.stringify(pesananBaruDetail));
+
+            // Simpan ke antrean master data admin
+            let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+            daftarPembelian.push({
+                no_pesanan: idPesanan,
+                nama: penerima,
+                wa: wa,
+                produk: namaProduk,
+                jumlah: qty,
+                tanggal: tanggalFormatted,
+                total: totalHargaMurni,
+                status: "dalam proses",
+                gambar_desain: base64Desain,
+                gambar_bukti: base64Bukti
+            });
+            localStorage.setItem('daftar_pembelian_koko', JSON.stringify(daftarPembelian));
+
+            alert("Pesanan Berhasil Disimpan dan Dikirim ke Admin!");
+            window.location.href = "riwayat.php"; 
+        }).catch(err => {
+            console.error(err);
+            alert("Terjadi kesalahan saat memproses gambar.");
+            btnKonfirmasi.innerText = "KONFIRMASI PESANAN";
+            btnKonfirmasi.disabled = false;
+        });
+    }
+
+    window.onload = function() {
+        // PERBAIKAN ALUR: Kunci user aktif dimuat terlebih dahulu
+        const namaUser = sessionStorage.getItem('current_user') || "Pelanggan";
+        document.getElementById('user-aktif').innerText = namaUser;
+        document.getElementById('penerima').value = namaUser;
+
+        // Baru kemudian kalkulasi harga awal dieksekusi
+        hitungOtomatis();
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

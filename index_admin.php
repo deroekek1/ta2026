@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Koko Cetak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
+        
+        /* Sidebar Flex Layout */
+        .sidebar {
+            width: 250px; height: 100vh; background-color: #f7ff00;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; }
+        .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .logo-container { padding: 20px 0; width: 100%; text-align: center; }
+
+        /* Main Content & Top Bar */
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
+        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-top-left { display: flex; align-items: center; gap: 15px; }
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.1rem; }
+        .admin-text { color: #f7ff00; font-size: 0.85rem; }
+
+        /* Content Area */
+        .content-body { padding: 30px; }
+        
+        /* Header Title Banner */
+        .header-title { 
+            background-color: #f7ff00; padding: 12px; text-align: center; 
+            font-weight: 800; border-radius: 10px; width: 50%; 
+            margin: 0 auto 30px; text-transform: uppercase; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
+            color: #000;
+        }
+
+        /* Dashboard Cards Modern Style */
+        .card-stat {
+            background-color: #fff; 
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            border: none;
+            height: 180px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .stat-title { font-weight: 700; margin-bottom: 5px; font-size: 1.1rem; color: #000; }
+        .stat-value { font-size: 2rem; font-weight: 800; margin-bottom: 15px; color: #000; }
+        .stat-icon i { font-size: 2.5rem; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow">
+    <div>
+        <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="index_admin.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="produk_admin.php"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pembelian_admin.php"><i class="bi bi-cart3"></i> Pembelian</a>
+            <a class="nav-link" href="pelanggan.php"><i class="bi bi-people"></i> Pelanggan</a>
+            <a class="nav-link" href="laporan.php"><i class="bi bi-journal-text"></i> Laporan</a>
+            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+        </nav>
+    </div>
+    
+    <div class="logo-container">
+        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="top-bar shadow-sm">
+        <div class="logo-top-left">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55">
+            <h5>KOKO CETAK UV PRINTING</h5>
+        </div>
+        <div class="admin-text">
+            Selamat Datang <span id="user-aktif">Admin</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <div class="header-title">DASHBOARD</div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <a href="pelanggan.php" class="text-decoration-none">
+                    <div class="card card-stat">
+                        <div class="stat-title">Pelanggan</div>
+                        <div id="jumlah-pelanggan" class="stat-value">0</div>
+                        <div class="stat-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="produk_admin.php" class="text-decoration-none">
+                    <div class="card card-stat">
+                        <div class="stat-title">Produk</div>
+                        <div id="jumlah-produk" class="stat-value">0</div>
+                        <div class="stat-icon">
+                            <i class="bi bi-box-seam-fill"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="pembelian_admin.php" class="text-decoration-none">
+                    <div class="card card-stat">
+                        <div class="stat-title">Pembelian</div>
+                        <div id="jumlah-pembelian" class="stat-value">0</div>
+                        <div class="stat-icon">
+                            <i class="bi bi-basket3-fill"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    window.onload = function() {
+        // 1. Sinkronisasi Nama Admin Aktif dari Session Storage
+        const namaUser = sessionStorage.getItem('current_user');
+        if (namaUser) {
+            document.getElementById('user-aktif').innerText = namaUser;
+        }
+
+        // 2. Ambil & Hitung Jumlah Pelanggan Real-time dari Registrasi (Gunakan Array Kosong jika null)
+        const daftarPelanggan = JSON.parse(localStorage.getItem('daftar_pelanggan_koko')) || [];
+        document.getElementById('jumlah-pelanggan').innerText = daftarPelanggan.length;
+
+        // 3. Ambil & Hitung Jumlah Produk (Disesuaikan key-nya dengan dashboard pelanggan: 'daftar_produk')
+        // PERBAIKAN: Menghapus "+ 1" agar hitungannya riil sesuai jumlah baris item data
+        const daftarProduk = JSON.parse(localStorage.getItem('daftar_produk')) || [];
+        document.getElementById('jumlah-produk').innerText = daftarProduk.length;
+
+        // 4. Ambil & Hitung Jumlah Pembelian (Gunakan Array Kosong jika null)
+        const daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+        document.getElementById('jumlah-pembelian').innerText = daftarPembelian.length;
+    };
+</script>
+</body>
+</html>

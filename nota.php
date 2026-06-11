@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Pembelian - Koko Cetak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; }
+        
+        /* Perbaikan Logo: Menggunakan Flexbox agar sejajar ke samping */
+        .top-bar { background-color: #000; color: #fff; padding: 10px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-top-left { display: flex; align-items: center; gap: 15px; } /* Menambah gap agar ada jarak antara logo dan teks */
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
+        .welcome-user { color: #f7ff00; font-weight: 600; font-size: 0.9rem; }
+
+        .content-body { padding: 40px 20px; max-width: 1100px; margin: 0 auto; }
+        .header-title { background-color: #f7ff00; padding: 12px; text-align: center; font-weight: 800; border-radius: 10px; width: 80%; margin: 0 auto 30px; text-transform: uppercase; box-shadow: 0 4px 6px rgba(0,0,0,0.1); color: #000; }
+
+        .nota-card { background: #fff; border-radius: 15px; padding: 40px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .nota-section-title { font-weight: 800; text-transform: uppercase; font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px solid #f7ff00; display: inline-block; }
+        .info-text { font-size: 0.9rem; line-height: 1.6; color: #333; }
+
+        .table-nota thead { background-color: #000; color: #f7ff00; }
+        .table-nota th { padding: 12px; font-size: 0.85rem; text-transform: uppercase; }
+        .table-nota td { vertical-align: middle; font-size: 0.85rem; }
+
+        /* PERBAIKAN: Penyelarasan Badge Status Nota */
+        .badge-status { padding: 5px 12px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; display: inline-block; }
+        .bg-bukti { background-color: #d1ecf1; color: #0c5460; }
+        .bg-batal { background-color: #f8d7da; color: #721c24; }
+        .bg-proses { background-color: #fff3cd; color: #856404; }
+        .bg-selesai { background-color: #d4edda; color: #155724; }
+
+        .btn-action { padding: 10px 25px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: 0.3s; }
+        .btn-print { background-color: #6c757d; color: #fff; border: none; }
+        .btn-history { background-color: #198754; color: #fff; border: none; }
+        .btn-dark { background-color: #212529; color: #fff; border: none; }
+        .btn-dark:hover { background-color: #000; color: #f7ff00; }
+
+        @media print {
+            .top-bar, .btn-action, .header-title { display: none; }
+            .content-body { padding: 0; max-width: 100%; }
+            .nota-card { box-shadow: none; border: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="logo-top-left">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55">
+            <h5>KOKO CETAK UV PRINTING</h5>
+        </div>
+        <div class="welcome-user">
+            Selamat Datang <span id="user-aktif">Pelanggan</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <h3><div class="header-title">NOTA PEMESANAN</div></h3>
+
+        <div class="nota-card">
+            <div class="row mb-4">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h6 class="nota-section-title">Pembelian</h6>
+                    <div class="info-text">
+                        <strong id="nota-no-pesanan">No Pesanan : -</strong><br>
+                        Tanggal : <span id="nota-tanggal">-</span><br>
+                        Total : <strong id="nota-grand-total">Rp. 0</strong>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="nota-section-title">Pembeli</h6>
+                    <div class="info-text">
+                        <strong id="nota-nama-pembeli">-</strong><br>
+                        <span id="nota-wa-pembeli">-</span><br>
+                        Status: <span id="nota-badge-container">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-nota text-center">
+                    <thead>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="45%">Nama Produk</th>
+                            <th width="15%">Harga Satuan</th>
+                            <th width="10%">Jumlah</th>
+                            <th width="25%">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nota-item-list">
+                    </tbody>
+                    <tfoot>
+                        <tr class="fw-bold" style="background-color: #f8f9fa;">
+                            <td colspan="4" class="text-end">Subtotal</td>
+                            <td id="nota-subtotal">Rp. 0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end gap-3 mt-5">
+                <a href="index_pelanggan.php" class="btn-action btn-dark text-center">
+                    <i class="bi bi-house me-2"></i> Halaman Utama
+                </a>
+                <button class="btn-action btn-print" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i> Cetak Nota
+                </button>
+                <a href="riwayat.php" class="btn-action btn-history text-center">
+                    <i class="bi bi-clock-history me-2"></i> Riwayat Pesanan
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // 1. Sinkronisasi Nama User Aktif
+            const namaUser = sessionStorage.getItem('current_user');
+            if (namaUser) {
+                document.getElementById('user-aktif').innerText = namaUser;
+            }
+
+            // 2. Ambil data pesanan dari local storage
+            const lastOrder = JSON.parse(localStorage.getItem('last_order'));
+
+            if (lastOrder) {
+                // Ambil database master pembelian admin untuk melacak perubahan status terbaru
+                let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+                
+                // Cari status ter-update berdasarkan kesesuaian No. Pesanan / Nama dan Nilai Total
+                const transaksiTerupdate = daftarPembelian.find(item => item.nama === lastOrder.penerima && item.total === lastOrder.total);
+                
+                // Jika ditemukan di database master admin, pakai status terbarunya. Jika tidak, fallback ke status awal bawaan nota.
+                const statusTerbaru = transaksiTerupdate ? transaksiTerupdate.status : lastOrder.status;
+
+                // --- LOGIKA BADGE WARNA DINAMIS SINKRONISASI ---
+                let classBadge = "bg-proses";
+                if(statusTerbaru === "sudah kirim bukti") { classBadge = "bg-bukti"; }
+                else if(statusTerbaru === "dibatalkan") { classBadge = "bg-batal"; }
+                else if(statusTerbaru === "selesai") { classBadge = "bg-selesai"; }
+
+                // Render badge status secara dinamis
+                document.getElementById('nota-badge-container').innerHTML = `<span class="badge-status ${classBadge}">${statusTerbaru}</span>`;
+
+                // Isi data teks dasar lainnya
+                document.getElementById('nota-no-pesanan').innerText = "No Pesanan : " + lastOrder.no_pesanan;
+                document.getElementById('nota-tanggal').innerText = lastOrder.tanggal;
+                document.getElementById('nota-grand-total').innerText = lastOrder.total;
+                document.getElementById('nota-nama-pembeli').innerText = lastOrder.penerima.toUpperCase();
+                document.getElementById('nota-wa-pembeli').innerText = lastOrder.wa;
+
+                // Hitung harga satuan kasar (Total / Kuantitas) untuk estetika tabel nota
+                const nilaiTotalMurni = parseInt(lastOrder.total.replace(/[^0-9]/g, ''));
+                const kuantitasMurni = parseInt(lastOrder.jumlah) || 1;
+                const hargaSatuanMurni = nilaiTotalMurni / kuantitasMurni;
+
+                const formatter = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                });
+                const hargaSatuanFormatted = formatter.format(hargaSatuanMurni).replace(/^(\D+)\s(.*)$/, '$1 $2');
+
+                const tbody = document.getElementById('nota-item-list');
+                tbody.innerHTML = `
+                    <tr>
+                        <td>1</td>
+                        <td class="text-start">${lastOrder.produk}</td>
+                        <td class="text-end pe-4">${hargaSatuanFormatted}</td> 
+                        <td>${lastOrder.jumlah}</td>
+                        <td class="text-end pe-4">${lastOrder.total}</td>
+                    </tr>
+                `;
+                document.getElementById('nota-subtotal').innerText = lastOrder.total;
+                document.getElementById('nota-subtotal').classList.add("text-end", "pe-4");
+            } else {
+                document.getElementById('nota-item-list').innerHTML = `<tr><td colspan="5">Tidak ada data pesanan terbaru.</td></tr>`;
+            }
+        };
+    </script>
+</body>
+</html>

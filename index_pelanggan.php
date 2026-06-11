@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Koko Cetak - Konsisten Header</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
+        
+        /* ==================== SINKRONISASI PERFECT SIDEBAR ==================== */
+        .sidebar {
+            width: 250px; height: 100vh; background-color: #f7ff00;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand { 
+            text-align: center; font-weight: 800; font-size: 1.1rem; 
+            padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; 
+            border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000;
+        }
+        .sidebar-menu-container { margin-top: 20px; }
+        .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .logo-container { padding: 20px 0; width: 100%; text-align: center; }
+        /* ========================================================================== */
+
+        /* Main Content & Top Bar */
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
+        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
+        .welcome-user { color: #f7ff00; font-size: 0.85rem; }
+
+        /* Styling Header Section */
+        .section-title {
+            background-color: #f7ff00;
+            padding: 10px 60px;
+            border-radius: 10px;
+            text-align: center; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            display: inline-block;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            color: #000;
+        }
+
+        /* Kategori Produk (Lingkaran) */
+        .category-section { background: #fff; padding: 30px 20px; border-bottom: 1px solid #ddd; text-align: center; }
+        .product-circle {
+            width: 80px; height: 80px; border-radius: 50%; background-color: #f7ff00;
+            margin: 0 auto 10px; overflow: hidden; border: 2px solid #eee; transition: 0.2s;
+        }
+        .product-circle:hover { transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .product-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .category-item p { font-size: 0.75rem; font-weight: 600; line-height: 1.3; color: #555; margin: 0; }
+        .category-link { text-decoration: none; }
+
+        /* Best Seller Section */
+        .product-card {
+            background: white; border: none; padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s;
+            border-radius: 8px; height: 100%; display: flex; flex-direction: column;
+            text-decoration: none;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .img-wrapper { background-color: #f7ff00; padding: 10px; border-radius: 5px; }
+        .img-wrapper img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 3px; }
+        
+        .p-title { font-size: 0.95rem; font-weight: 700; margin-top: 12px; color: #333; flex-grow: 1; text-align: left; }
+        .p-price { color: #ff0055; font-weight: 800; font-size: 1.1rem; margin: 5px 0; text-align: left; }
+        .p-meta { font-size: 0.75rem; color: #777; display: flex; justify-content: space-between; align-items: center; }
+        .badge-rating { background: #fff8e1; color: #ffc107; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow">
+    <div>
+        <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
+        <nav class="nav flex-column sidebar-menu-container">
+            <a class="nav-link active" href="index_pelanggan.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="list_produk.php"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pemesanan.php"><i class="bi bi-cart3"></i> Pemesanan</a>
+            <a class="nav-link" href="riwayat.php"><i class="bi bi-journal-text"></i> Riwayat Pesanan</a>
+            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+        </nav>
+    </div>
+    <div class="logo-container">
+        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="top-bar shadow-sm">
+        <h5>KOKO CETAK UV PRINTING</h5>
+        <div class="welcome-user">
+            Selamat Datang <span id="user-aktif">Pelanggan</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="mb-4">
+            <h4 class="section-title">DASHBOARD</h4>
+        </div>
+        
+        <div class="d-flex justify-content-around text-center flex-wrap gap-2">
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/emon.png" alt="E-Money"></div>
+                    <p>E-Money & Aksesoris</p>
+                </a>
+            </div>
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/kotak.png" alt="Penyimpanan"></div>
+                    <p>Penyimpanan Data</p>
+                </a>
+            </div>
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/lanyard.png" alt="Lanyard"></div>
+                    <p>Perlengkapan Kantor</p>
+                </a>
+            </div>
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/sovenir.png" alt="Souvenir"></div>
+                    <p>Souvenir & Hadiah</p>
+                </a>
+            </div>
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/pb.png" alt="Powerbank"></div>
+                    <p>Powerbank & Baterai</p>
+                </a>
+            </div>
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/pop.png" alt="PopSocket"></div>
+                    <p>Aksesoris Handphone</p>
+                </a>
+            </div>
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/pulpen.png" alt="Pulpen"></div>
+                    <p>Alat Tulis</p>
+                </a>
+            </div>
+            <div class="category-item" style="width: 100px;">
+                <a href="list_produk.php" class="category-link">
+                    <div class="product-circle"><img src="img/tumbler.png" alt="Tumbler"></div>
+                    <p>Peralatan Makan</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-5 pb-5">
+        <div class="position-relative text-center mt-5 mb-4">
+            <h4 class="section-title">PRODUK BEST SELLER KAMI</h4>
+            <a href="list_produk.php" class="position-absolute end-0 top-50 translate-middle-y text-dark fw-bold text-decoration-none" style="font-size: 0.9rem;">
+                Lihat Semua >>
+            </a>
+        </div>
+
+        <div class="row g-4 justify-content-center" id="container-best-seller">
+            </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        // 1. Sinkronisasi Nama User Aktif
+        const namaUser = sessionStorage.getItem('current_user');
+        if (namaUser) {
+            document.getElementById('user-aktif').innerText = namaUser;
+        }
+
+        // 2. Ambil data dari LocalStorage & Render Best Seller secara Dinamis
+        const daftarProduk = JSON.parse(localStorage.getItem('daftar_produk')) || [];
+        const container = document.getElementById('container-best-seller');
+        
+        // Ambil maksimal 3 produk teratas untuk dipasang di Best Seller
+        const produkTampilkan = daftarProduk.slice(0, 3);
+
+        if (produkTampilkan.length > 0) {
+            container.innerHTML = ""; // Bersihkan isi kontainer awal
+            
+            produkTampilkan.forEach(produk => {
+                // Konversi nominal harga ke format rupiah standar display
+                const hargaNominal = parseInt(produk.harga) || 0;
+                const formatRupiah = "Rp " + hargaNominal.toLocaleString('id-ID');
+                
+                // fallback data jika properti tertentu tidak terdefinisi
+                const gambarProduk = produk.gambar || produk.foto || "img/emon.png";
+                const rating = produk.rating || "4.9";
+                const terjual = produk.terjual || "6RB+";
+
+                const kartuHTML = `
+                    <div class="col-md-4">
+                        <a href="detail_produk.php?id=${produk.id}" class="product-card">
+                            <div class="img-wrapper"><img src="${gambarProduk}" alt="${produk.nama}"></div>
+                            <div class="p-title">${produk.nama || produk.nama_produk}</div>
+                            <div class="p-price">${formatRupiah}</div>
+                            <div class="p-meta">
+                                <span class="badge-rating">⭐ ${rating}</span>
+                                <span>${terjual} terjual</span>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                container.innerHTML += kartuHTML;
+            });
+        } else {
+            // Jika database di localStorage kosong, tampilkan pesan error layout yang rapi
+            container.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="alert alert-warning d-inline-block px-5" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Belum ada data produk yang terdaftar di sistem penyimpanan lokal!
+                    </div>
+                </div>`;
+        }
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

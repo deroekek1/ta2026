@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Pesanan - Koko Cetak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
+        
+        /* ==================== SINKRONISASI PERFECT SIDEBAR ==================== */
+        .sidebar {
+            width: 250px; height: 100vh; background-color: #f7ff00;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand { 
+            text-align: center; font-weight: 800; font-size: 1.1rem; 
+            padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; 
+            border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000;
+        }
+        .sidebar-menu-container { margin-top: 20px; }
+        .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .logo-container { padding: 20px 0; width: 100%; text-align: center; }
+        /* ========================================================================== */
+
+        /* Main Content & Top Bar */
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
+        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-top-left { display: flex; align-items: center; gap: 15px; }
+        .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
+        .welcome-user { color: #f7ff00; font-size: 0.85rem; }
+
+        /* Content Area */
+        .content-body { padding: 30px; }
+        .header-title {
+            background-color: #f7ff00; padding: 12px; text-align: center; font-weight: 800;
+            border-radius: 10px; width: 100%; margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-transform: uppercase; color: #000;
+            font-size: 1.4rem; letter-spacing: 1px;
+        }
+
+        /* Card Layout & Table */
+        .panel-box { background: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .table-riwayat { width: 100% !important; border-collapse: collapse; }
+        .table-riwayat th { font-weight: 700; color: #000; font-size: 0.95rem; border-bottom: 2px solid #ccc !important; padding: 12px 10px; text-align: center !important; background-color: #d1d1d1; }
+        .table-riwayat td { vertical-align: middle; font-size: 0.9rem; color: #333; padding: 12px 10px; border-bottom: 1px solid #edf2f7; }
+
+        /* Badge Status & Button */
+        .badge-status { padding: 5px 10px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; display: inline-block; }
+        .bg-bukti { background-color: #d1ecf1; color: #0c5460; }
+        .bg-batal { background-color: #f8d7da; color: #721c24; }
+        .bg-proses { background-color: #fff3cd; color: #856404; }
+        .bg-selesai { background-color: #d4edda; color: #155724; }
+        
+        .btn-nota { background-color: #000; color: #f7ff00; font-weight: 700; font-size: 0.8rem; padding: 5px 15px; border-radius: 6px; text-decoration: none; border: 1px solid #000; transition: 0.2s; }
+        .btn-nota:hover { background-color: #333; color: #fff; border-color: #333; }
+        .page-item.active .page-link { background-color: #000 !important; border-color: #000 !important; color: #f7ff00 !important; }
+        .page-link { color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar shadow">
+    <div>
+        <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
+        <nav class="nav flex-column sidebar-menu-container">
+            <a class="nav-link" href="index_pelanggan.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="list_produk.php"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pemesanan.php"><i class="bi bi-cart3"></i> Pemesanan</a>
+            <a class="nav-link active" href="riwayat.php"><i class="bi bi-journal-text"></i> Riwayat Pesanan</a>
+            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+        </nav>
+    </div>
+    <div class="logo-container">
+        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="top-bar shadow-sm">
+        <div class="logo-top-left">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55" alt="Logo">
+            <h5>KOKO CETAK UV PRINTING</h5>
+        </div>
+        <div class="welcome-user">
+            Selamat Datang <span id="user-aktif">Pelanggan</span> <i class="bi bi-person-circle ms-2"></i>
+        </div>
+    </div>
+
+    <div class="content-body">
+        <div class="header-title">RIWAYAT PESANAN ANDA</div>
+
+        <div class="panel-box">
+            <div class="table-responsive">
+                <table id="tabelRiwayat" class="table table-hover table-riwayat">
+                    <thead>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="15%">Tanggal</th>
+                            <th width="35%">Produk / Item Belanja</th>
+                            <th width="15%">Total Bayar</th>
+                            <th width="15%">Status Validasi</th>
+                            <th width="15%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-riwayat-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let dataRenderLokal = [];
+
+    $(document).ready(function () {
+        // 1. Identifikasi User Aktif
+        const namaUserAktif = sessionStorage.getItem('current_user') || "Pelanggan";
+        document.getElementById('user-aktif').innerText = namaUserAktif;
+        const namaLoginLower = namaUserAktif.toLowerCase().trim();
+
+        // 2. Load Data Master Database Lokal
+        let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+        let riwayatDetail = JSON.parse(localStorage.getItem('riwayat_koko')) || [];
+
+        // 3. Filter Pemesanan Milik Akun yang Sedang Login (Deteksi kecocokan string murni/lebih akurat)
+        let pesananSaya = daftarPembelian.filter(item => {
+            if (!item.nama) return false;
+            const namaOrder = item.nama.toLowerCase().trim();
+            return namaOrder === namaLoginLower;
+        });
+
+        // 4. Inisialisasi Awal Engine DataTables
+        const tabelRiwayatSistem = $('#tabelRiwayat').DataTable({
+            "pageLength": 5, 
+            "lengthMenu": [5, 10, 25, 50], 
+            "ordering": false,
+            "language": {
+                "search": "Cari Riwayat:", 
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ pesanan",
+                "paginate": { "previous": "Sebelumnya", "next": "Selanjutnya" }
+            }
+        });
+
+        // 5. Bersihkan data cache DataTables lama
+        tabelRiwayatSistem.clear();
+        dataRenderLokal = [];
+
+        // 6. Masukkan data hasil filter ke dalam DataTables menggunakan row.add()
+        pesananSaya.forEach((item, index) => {
+            const nomor = index + 1;
+            
+            // Normalisasi Status & Handling Null Value
+            let statusSistem = item.status ? item.status.toLowerCase().trim() : "dalam proses";
+            let classBadge = "bg-proses";
+
+            if(statusSistem.includes("bukti") || statusSistem === "pending") { 
+                classBadge = "bg-bukti"; 
+                statusSistem = "sudah kirim bukti";
+            }
+            else if(statusSistem === "dibatalkan") { 
+                classBadge = "bg-batal"; 
+            }
+            else if(statusSistem === "selesai") { 
+                classBadge = "bg-selesai"; 
+            }
+            else { 
+                classBadge = "bg-proses"; 
+                statusSistem = "dalam proses";
+            }
+
+            // Cari kecocokan data detail item di riwayat_koko dengan penanganan anti-error (.replace aman)
+            const detailProduk = riwayatDetail.find(p => {
+                if(!p.penerima) return false;
+                const namaPenerima = p.penerima.toLowerCase().trim();
+                
+                const totalP = p.total ? String(p.total).replace(/[^0-9]/g, '') : '';
+                const totalItem = item.total ? String(item.total).replace(/[^0-9]/g, '') : '';
+                
+                return namaPenerima === namaLoginLower && totalP === totalItem;
+            });
+
+            // Fallback teks jika data tidak lengkap / parsial kosong
+            const namaItemCetak = item.produk ? `${item.produk} (${item.jumlah || 1} Pcs)` : (detailProduk && detailProduk.produk ? `${detailProduk.produk} (${detailProduk.jumlah || 1} Pcs)` : "Produk Cetak Custom");
+            const noPesananFix = item.no_pesanan || (detailProduk && detailProduk.no_pesanan ? detailProduk.no_pesanan : "#KC-" + Math.floor(100000 + Math.random() * 900000));
+            const waFix = item.wa || (detailProduk && detailProduk.wa ? detailProduk.wa : "-");
+            const produkFix = item.produk || (detailProduk && detailProduk.produk ? detailProduk.produk : "Produk Cetak Custom");
+            const jumlahFix = item.jumlah || (detailProduk && detailProduk.jumlah ? detailProduk.jumlah : "1");
+            const tanggalFix = item.tanggal || "-";
+            const totalFix = item.total || "Rp. 0";
+
+            // Simpan data fix ke array internal untuk disalurkan ke nota.php
+            dataRenderLokal.push({
+                no_pesanan: noPesananFix, 
+                penerima: item.nama, 
+                wa: waFix, 
+                produk: produkFix, 
+                jumlah: jumlahFix, 
+                total: totalFix, 
+                tanggal: tanggalFix, 
+                status: statusSistem
+            });
+
+            const internalIndex = dataRenderLokal.length - 1;
+
+            // Inject baris data ke DataTables API
+            tabelRiwayatSistem.row.add([
+                `<div class="text-center fw-bold">${nomor}</div>`,
+                `<div class="text-center">${tanggalFix}</div>`,
+                `<div><i class="bi bi-box-seam-fill me-2 text-secondary"></i>${namaItemCetak}</div>`,
+                `<div class="text-end pe-4 fw-semibold text-danger">${totalFix}</div>`,
+                `<div class="text-center"><span class="badge-status ${classBadge}">${statusSistem}</span></div>`,
+                `<div class="text-center"><button type="button" onclick="bukaNota(${internalIndex})" class="btn-nota"><i class="bi bi-file-earmark-text-fill me-1"></i> Nota</button></div>`
+            ]);
+        });
+
+        // Gambar ulang tabel secara visual
+        tabelRiwayatSistem.draw(false);
+    });
+
+    function bukaNota(indeksTerpilih) {
+        const objekNota = dataRenderLokal[indeksTerpilih];
+        if (objekNota) {
+            localStorage.setItem('last_order', JSON.stringify(objekNota));
+            window.location.href = "nota.php";
+        }
+    }
+</script>
+</body>
+</html>

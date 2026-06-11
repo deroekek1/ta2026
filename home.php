@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Koko Cetak UV Printing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            overflow: hidden; /* Mencegah scroll jika tidak perlu */
+            height: 100vh;
+        }
+
+        /* Bentuk Kuning di Latar Belakang */
+        .bg-yellow-shape {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 60%;
+            height: 100%;
+            background-color: #f7ff00;
+            clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%);
+            z-index: 1;
+        }
+
+        /* Kontainer Utama */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .btn-login-top {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            background-color: #000;
+            color: #fff;
+            padding: 8px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            -webkit-text-stroke: 1px #fff; /* Efek outline tipis agar terbaca di bg kuning */
+        }
+
+        .sub-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #000;
+            background-color: #f7ff00;
+            display: inline-block;
+            padding: 5px 15px;
+            border: 2px solid #000;
+            margin-bottom: 40px;
+        }
+
+        .logo-circle {
+            width: 250px;
+            height: 250px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 5px solid #f7ff00;
+        }
+
+        /* Area Ilustrasi */
+        .illustration-box {
+            position: absolute;
+            bottom: 0;
+            right: 5%;
+            width: 45%;
+            z-index: 3;
+        }
+
+        .illustration-box img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Dekorasi Hitam di Bawah */
+        .black-footer-shape {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60%;
+            height: 25%;
+            background-color: #000;
+            border-top-left-radius: 50px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-yellow-shape"></div>
+    <div class="black-footer-shape"></div>
+
+    <a href="login.php" class="btn-login-top">LOGIN</a>
+
+    <div class="container hero-section">
+        <div class="row w-100 align-items-center">
+            <div class="col-lg-6">
+                <h1 class="main-title text-center mb-5">KOKO CETAK<br>UV PRINTING</h1>
+                
+                <div class="mt-5">
+                    <h2 class="sub-title">SISTEM PEMESANAN<br>KOKO CETAK</h2>
+                </div>
+
+                <div>
+                    <img src="img/logo_koko.png" alt="Logo" class="rounded-circle" width="300">
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="illustration-box">
+                    <img src="img/home.png" alt="Ilustrasi Koko Cetak">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
