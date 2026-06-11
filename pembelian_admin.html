@@ -79,12 +79,12 @@
     <div>
         <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
         <nav class="nav flex-column">
-            <a class="nav-link" href="index_admin.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a class="nav-link" href="produk_admin.php"><i class="bi bi-box-seam"></i> Produk</a>
-            <a class="nav-link active" href="pembelian_admin.php"><i class="bi bi-cart3"></i> Pembelian</a>
-            <a class="nav-link" href="pelanggan.php"><i class="bi bi-people"></i> Pelanggan</a>
-            <a class="nav-link" href="laporan.php"><i class="bi bi-journal-text"></i> Laporan</a>
-            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+            <a class="nav-link" href="index_admin.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="produk_admin.html"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link active" href="pembelian_admin.html"><i class="bi bi-cart3"></i> Pembelian</a>
+            <a class="nav-link" href="pelanggan.html"><i class="bi bi-people"></i> Pelanggan</a>
+            <a class="nav-link" href="laporan.html"><i class="bi bi-journal-text"></i> Laporan</a>
+            <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-left"></i> LogOut</a>
         </nav>
     </div>
     <div class="logo-container">
@@ -186,13 +186,13 @@
             // Menggunakan identitas no_pesanan sebagai ganti index array murni agar link tidak tertukar saat difilter/search
             const idParam = encodeURIComponent(item.no_pesanan);
             
-            let tombolAksi = `<a href="detail_pembayaran.php?id=${idParam}" class="btn-action btn-dtl">Detail</a>`;
+            let tombolAksi = `<a href="detail_pembayaran.html?id=${idParam}" class="btn-action btn-dtl">Detail</a>`;
             
             if (statusSistem === "sudah kirim bukti" || statusSistem === "dalam proses") {
                 tombolAksi = `
                     <div class="d-flex gap-1 justify-content-center">
-                        <a href="detail_pembayaran.php?id=${idParam}" class="btn-action btn-dtl">Detail</a>
-                        <a href="pembayaran.php?id=${idParam}" class="btn-action btn-pay">Lihat Pembayaran</a>
+                        <a href="detail_pembayaran.html?id=${idParam}" class="btn-action btn-dtl">Detail</a>
+                        <a href="pembayaran.html?id=${idParam}" class="btn-action btn-pay">Lihat Pembayaran</a>
                     </div>
                 `;
             }
