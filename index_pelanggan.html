@@ -85,11 +85,11 @@
     <div>
         <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
         <nav class="nav flex-column sidebar-menu-container">
-            <a class="nav-link active" href="index_pelanggan.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a class="nav-link" href="list_produk.php"><i class="bi bi-box-seam"></i> Produk</a>
-            <a class="nav-link" href="pemesanan.php"><i class="bi bi-cart3"></i> Pemesanan</a>
-            <a class="nav-link" href="riwayat.php"><i class="bi bi-journal-text"></i> Riwayat Pesanan</a>
-            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+            <a class="nav-link active" href="index_pelanggan.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="list_produk.html"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pemesanan.html"><i class="bi bi-cart3"></i> Pemesanan</a>
+            <a class="nav-link" href="riwayat.html"><i class="bi bi-journal-text"></i> Riwayat Pesanan</a>
+            <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-left"></i> LogOut</a>
         </nav>
     </div>
     <div class="logo-container">
@@ -112,49 +112,49 @@
         
         <div class="d-flex justify-content-around text-center flex-wrap gap-2">
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/emon.png" alt="E-Money"></div>
                     <p>E-Money & Aksesoris</p>
                 </a>
             </div>
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/kotak.png" alt="Penyimpanan"></div>
                     <p>Penyimpanan Data</p>
                 </a>
             </div>
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/lanyard.png" alt="Lanyard"></div>
                     <p>Perlengkapan Kantor</p>
                 </a>
             </div>
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/sovenir.png" alt="Souvenir"></div>
                     <p>Souvenir & Hadiah</p>
                 </a>
             </div>
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/pb.png" alt="Powerbank"></div>
                     <p>Powerbank & Baterai</p>
                 </a>
             </div>
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/pop.png" alt="PopSocket"></div>
                     <p>Aksesoris Handphone</p>
                 </a>
             </div>
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/pulpen.png" alt="Pulpen"></div>
                     <p>Alat Tulis</p>
                 </a>
             </div>
             <div class="category-item" style="width: 100px;">
-                <a href="list_produk.php" class="category-link">
+                <a href="list_produk.html" class="category-link">
                     <div class="product-circle"><img src="img/tumbler.png" alt="Tumbler"></div>
                     <p>Peralatan Makan</p>
                 </a>
@@ -165,7 +165,7 @@
     <div class="container px-5 pb-5">
         <div class="position-relative text-center mt-5 mb-4">
             <h4 class="section-title">PRODUK BEST SELLER KAMI</h4>
-            <a href="list_produk.php" class="position-absolute end-0 top-50 translate-middle-y text-dark fw-bold text-decoration-none" style="font-size: 0.9rem;">
+            <a href="list_produk.html" class="position-absolute end-0 top-50 translate-middle-y text-dark fw-bold text-decoration-none" style="font-size: 0.9rem;">
                 Lihat Semua >>
             </a>
         </div>
@@ -205,7 +205,7 @@
 
                 const kartuHTML = `
                     <div class="col-md-4">
-                        <a href="detail_produk.php?id=${produk.id}" class="product-card">
+                        <a href="detail_produk.html?id=${produk.id}" class="product-card">
                             <div class="img-wrapper"><img src="${gambarProduk}" alt="${produk.nama}"></div>
                             <div class="p-title">${produk.nama || produk.nama_produk}</div>
                             <div class="p-price">${formatRupiah}</div>
