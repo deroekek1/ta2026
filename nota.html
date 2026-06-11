@@ -12,7 +12,7 @@
         
         /* Perbaikan Logo: Menggunakan Flexbox agar sejajar ke samping */
         .top-bar { background-color: #000; color: #fff; padding: 10px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .logo-top-left { display: flex; align-items: center; gap: 15px; } /* Menambah gap agar ada jarak antara logo dan teks */
+        .logo-top-left { display: flex; align-items: center; gap: 15px; } 
         .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
         .welcome-user { color: #f7ff00; font-weight: 600; font-size: 0.9rem; }
 
@@ -76,7 +76,7 @@
                     <h6 class="nota-section-title">Pembeli</h6>
                     <div class="info-text">
                         <strong id="nota-nama-pembeli">-</strong><br>
-                        <span id="nota-wa-pembeli">-</span><br>
+                        WhatsApp: <span id="nota-wa-pembeli">-</span><br>
                         Status: <span id="nota-badge-container">-</span>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                         </tr>
                     </thead>
                     <tbody id="nota-item-list">
-                    </tbody>
+                        </tbody>
                     <tfoot>
                         <tr class="fw-bold" style="background-color: #f8f9fa;">
                             <td colspan="4" class="text-end">Subtotal</td>
@@ -109,80 +109,3 @@
                     <i class="bi bi-house me-2"></i> Halaman Utama
                 </a>
                 <button class="btn-action btn-print" onclick="window.print()">
-                    <i class="bi bi-printer me-2"></i> Cetak Nota
-                </button>
-                <a href="riwayat.html" class="btn-action btn-history text-center">
-                    <i class="bi bi-clock-history me-2"></i> Riwayat Pesanan
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        window.onload = function() {
-            // 1. Sinkronisasi Nama User Aktif
-            const namaUser = sessionStorage.getItem('current_user');
-            if (namaUser) {
-                document.getElementById('user-aktif').innerText = namaUser;
-            }
-
-            // 2. Ambil data pesanan dari local storage
-            const lastOrder = JSON.parse(localStorage.getItem('last_order'));
-
-            if (lastOrder) {
-                // Ambil database master pembelian admin untuk melacak perubahan status terbaru
-                let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
-                
-                // Cari status ter-update berdasarkan kesesuaian No. Pesanan / Nama dan Nilai Total
-                const transaksiTerupdate = daftarPembelian.find(item => item.nama === lastOrder.penerima && item.total === lastOrder.total);
-                
-                // Jika ditemukan di database master admin, pakai status terbarunya. Jika tidak, fallback ke status awal bawaan nota.
-                const statusTerbaru = transaksiTerupdate ? transaksiTerupdate.status : lastOrder.status;
-
-                // --- LOGIKA BADGE WARNA DINAMIS SINKRONISASI ---
-                let classBadge = "bg-proses";
-                if(statusTerbaru === "sudah kirim bukti") { classBadge = "bg-bukti"; }
-                else if(statusTerbaru === "dibatalkan") { classBadge = "bg-batal"; }
-                else if(statusTerbaru === "selesai") { classBadge = "bg-selesai"; }
-
-                // Render badge status secara dinamis
-                document.getElementById('nota-badge-container').innerHTML = `<span class="badge-status ${classBadge}">${statusTerbaru}</span>`;
-
-                // Isi data teks dasar lainnya
-                document.getElementById('nota-no-pesanan').innerText = "No Pesanan : " + lastOrder.no_pesanan;
-                document.getElementById('nota-tanggal').innerText = lastOrder.tanggal;
-                document.getElementById('nota-grand-total').innerText = lastOrder.total;
-                document.getElementById('nota-nama-pembeli').innerText = lastOrder.penerima.toUpperCase();
-                document.getElementById('nota-wa-pembeli').innerText = lastOrder.wa;
-
-                // Hitung harga satuan kasar (Total / Kuantitas) untuk estetika tabel nota
-                const nilaiTotalMurni = parseInt(lastOrder.total.replace(/[^0-9]/g, ''));
-                const kuantitasMurni = parseInt(lastOrder.jumlah) || 1;
-                const hargaSatuanMurni = nilaiTotalMurni / kuantitasMurni;
-
-                const formatter = new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0
-                });
-                const hargaSatuanFormatted = formatter.format(hargaSatuanMurni).replace(/^(\D+)\s(.*)$/, '$1 $2');
-
-                const tbody = document.getElementById('nota-item-list');
-                tbody.innerHTML = `
-                    <tr>
-                        <td>1</td>
-                        <td class="text-start">${lastOrder.produk}</td>
-                        <td class="text-end pe-4">${hargaSatuanFormatted}</td> 
-                        <td>${lastOrder.jumlah}</td>
-                        <td class="text-end pe-4">${lastOrder.total}</td>
-                    </tr>
-                `;
-                document.getElementById('nota-subtotal').innerText = lastOrder.total;
-                document.getElementById('nota-subtotal').classList.add("text-end", "pe-4");
-            } else {
-                document.getElementById('nota-item-list').innerHTML = `<tr><td colspan="5">Tidak ada data pesanan terbaru.</td></tr>`;
-            }
-        };
-    </script>
-</body>
-</html>
