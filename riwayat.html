@@ -72,11 +72,11 @@
     <div>
         <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
         <nav class="nav flex-column sidebar-menu-container">
-            <a class="nav-link" href="index_pelanggan.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a class="nav-link" href="list_produk.php"><i class="bi bi-box-seam"></i> Produk</a>
-            <a class="nav-link" href="pemesanan.php"><i class="bi bi-cart3"></i> Pemesanan</a>
-            <a class="nav-link active" href="riwayat.php"><i class="bi bi-journal-text"></i> Riwayat Pesanan</a>
-            <a class="nav-link" href="login.php"><i class="bi bi-box-arrow-left"></i> LogOut</a>
+            <a class="nav-link" href="index_pelanggan.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="list_produk.html"><i class="bi bi-box-seam"></i> Produk</a>
+            <a class="nav-link" href="pemesanan.html"><i class="bi bi-cart3"></i> Pemesanan</a>
+            <a class="nav-link active" href="riwayat.html"><i class="bi bi-journal-text"></i> Riwayat Pesanan</a>
+            <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-left"></i> LogOut</a>
         </nav>
     </div>
     <div class="logo-container">
@@ -236,7 +236,7 @@
         const objekNota = dataRenderLokal[indeksTerpilih];
         if (objekNota) {
             localStorage.setItem('last_order', JSON.stringify(objekNota));
-            window.location.href = "nota.php";
+            window.location.href = "nota.html";
         }
     }
 </script>
