@@ -10,12 +10,12 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
         
-        /* Sidebar Responsive & Flex Layout */
+        /* Sidebar Default (Desktop / Monitor) */
         .sidebar {
             width: 250px; height: 100vh; background-color: #f7ff00;
             position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); overflow-y: auto;
         }
         .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000; }
         .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
@@ -23,7 +23,7 @@
         .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
 
-        /* Main Content & Top Bar */
+        /* Main Content & Top Bar Default (Desktop) */
         .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
         .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
         .logo-top-left { display: flex; align-items: center; gap: 15px; }
@@ -52,9 +52,8 @@
 
         /* Custom Table Styling */
         .table-custom { border: 1px solid #ccc; }
-        .table-custom th { background-color: #fff; color: #000; font-weight: 700; padding: 12px; vertical-align: middle; border: 1px solid #ccc; text-align: center !important; }
-        .table-custom td { padding: 12px; border: 1px solid #ccc; font-size: 0.9rem; text-align: left; vertical-align: top; color: #333; }
-        .table-custom td.center-align { text-align: center; vertical-align: middle; }
+        .table-custom th { background-color: #000 !important; color: #f7ff00 !important; font-weight: 700; padding: 12px; vertical-align: middle; border: 1px solid #ccc; text-align: center !important; font-size: 0.85rem; text-transform: uppercase; }
+        .table-custom td { padding: 12px; border: 1px solid #ccc; font-size: 0.9rem; text-align: left; vertical-align: middle; color: #333; }
 
         /* Action Buttons Minimalis */
         .btn-action { width: 100px; font-weight: 800; font-size: 0.8rem; padding: 6px; border-radius: 20px; margin-bottom: 8px; border: none; display: block; margin-left: auto; margin-right: auto; text-transform: uppercase; text-align: center; text-decoration: none; }
@@ -63,8 +62,32 @@
         .btn-hapus { background-color: #ff0000; color: #fff; }
         .btn-action:hover { opacity: 0.85; color: #fff; }
         
-        .product-img-thum { width: 130px; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #ddd; padding: 3px; background: #fff; }
+        .product-img-thum { width: 100px; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #ddd; padding: 3px; background: #fff; display: block; margin: 0 auto; border-radius: 4px; }
         .desc-text ul { padding-left: 20px; margin-top: 5px; margin-bottom: 5px; list-style-type: disc; }
+
+        /* ==========================================================================
+           PERBAIKAN RESPONSIVE KHUSUS ANDROID / HP (Layar di bawah 768px)
+           ========================================================================== */
+        @media (max-width: 767.98px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 15px 0 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .sidebar-brand, .logo-container { display: none; } 
+            
+            .sidebar nav { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 10px; }
+            .nav-link { padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; background-color: rgba(0,0,0,0.03); }
+            .nav-link i { margin-right: 5px; font-size: 1rem; }
+            
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 10px 15px; flex-direction: column; gap: 8px; text-align: center; }
+            .logo-top-left h5 { font-size: 0.95rem; }
+            
+            .content-body { padding: 15px; }
+            .header-title { width: 90%; font-size: 1.2rem; margin-bottom: 20px; }
+            .panel-body { padding: 15px; }
+            .product-img-thum { width: 70px; }
+            
+            /* Optimasi tumpukan tombol di dalam tabel saat layar HP */
+            .btn-action { width: 100%; font-size: 0.75rem; padding: 6px; margin-bottom: 5px; }
+        }
     </style>
 </head>
 <body>
@@ -82,14 +105,14 @@
         </nav>
     </div>
     <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
 <div class="main-content">
     <div class="top-bar shadow-sm">
         <div class="logo-top-left">
-            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55" alt="Logo Mini">
             <h5>KOKO CETAK UV PRINTING</h5>
         </div>
         <div class="admin-text">
@@ -112,8 +135,8 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="20%">Nama Barang</th>
-                                <th width="12%">Harga</th>
-                                <th width="18%">Foto</th>
+                                <th width="15%">Harga</th>
+                                <th width="15%">Foto</th>
                                 <th width="33%">Deskripsi</th>
                                 <th width="12%">Aksi</th>
                             </tr>
@@ -129,24 +152,24 @@
 </div>
 
 <script>
-    // Data bawaan awal (Fallback) terintegrasi ID unik murni
+    // Data default awal jika localStorage masih kosong bersih
     const produkAwalSistem = [
         {
             id: 1,
             nama: "E-toll Emoney Custom Print",
             harga: 60000,
             gambar: "img/emon.png",
+            foto: "img/emon.png",
             rating: "4.9",
             terjual: "6RB+",
             deskripsi: "Jenis Kartu: E-Money<br>Catatan:<br><ul><li>Saldo Rp. 0,-</li><li>Gratis Plastik Kartu</li></ul>Proses Cetak: UV Printing (BUKAN menggunakan stiker/garskin, jadi gambar lebih tajam, berkualitas, bertekstur & tahan lama)<br>Kegunaan E-toll untuk pembayaran:<br><ul><li>Toll</li><li>Parkir</li><li>Tempat hiburan</li><li>SPBU</li><li>Pembayaran transportasi umum: transjakarta, angkot Jak lingko, kereta, dll.</li><li>Belanja dan pembayaran umum seperti di indomaret/alfamart, dsb.</li></ul>"
         }
     ];
 
-    // Fungsi menampilkan semua daftar produk dari database lokal
     function muatSemuaProduk() {
         let daftarProduk = JSON.parse(localStorage.getItem('daftar_produk'));
         
-        // Jika belum ada data produk sama sekali di localStorage, pasang data default
+        // Validasi jika data null atau kosong, isi dengan produk default awal
         if (!daftarProduk || daftarProduk.length === 0) {
             localStorage.setItem('daftar_produk', JSON.stringify(produkAwalSistem));
             daftarProduk = produkAwalSistem;
@@ -155,21 +178,30 @@
         const tbody = document.getElementById('tabel-produk-body');
         tbody.innerHTML = ""; 
 
+        let adaPerubahanID = false;
+
         daftarProduk.forEach((item, index) => {
             const nomorBaris = index + 1; 
-            // Pastikan item memiliki ID, jika tidak gunakan fallback timestamp/nomor baris aman
-            const idBarang = item.id || (new Date().getTime() + index);
-            if (!item.id) { item.id = idBarang; } // Auto-repair objek data tanpa ID
+            
+            // Perbaikan penanganan ID: Kunci ID bawaan agar tidak terus-menerus berubah saat refresh
+            if (!item.id) { 
+                item.id = Date.now() + index; 
+                adaPerubahanID = true; 
+            }
+            
+            const idBarang = item.id;
 
-            // Format Harga standard Rupiah Indonesia
+            // Format Harga Rupiah Indonesia
             const formatHarga = new Intl.NumberFormat('id-ID', {
                 style: 'currency',
                 currency: 'IDR',
                 minimumFractionDigits: 0
             }).format(item.harga || 0);
 
+            // Jalur Gambar fleksibel untuk Base64 ataupun aset folder lokal proyek img/
             const pathFoto = item.gambar || item.foto || "img/emon.png";
             
+            // Format deskripsi agar tag HTML baris baru (<br>) tumpah dengan rapi
             let deskripsiFix = item.deskripsi || "";
             if (!deskripsiFix.includes('<br>') && !deskripsiFix.includes('<li>')) {
                 deskripsiFix = deskripsiFix.replace(/\n/g, '<br>');
@@ -177,14 +209,14 @@
 
             const barisHTML = document.createElement('tr');
             barisHTML.innerHTML = `
-                <td class=" fw-bold">${nomorBaris}</td>
-                <td class=" fw-bold">${item.nama || item.nama_produk}</td>
-                <td class=" fw-bold text-danger">${formatHarga}</td>
-                <td class="">
+                <td class="text-center fw-bold">${nomorBaris}</td>
+                <td class="fw-semibold">${item.nama || item.nama_produk || "Produk Tanpa Nama"}</td>
+                <td class="fw-bold text-danger text-end">${formatHarga}</td>
+                <td>
                     <img src="${pathFoto}" class="product-img-thum shadow-sm" alt="Foto Produk" onerror="this.onerror=null; this.src='img/emon.png';">
                 </td>
                 <td class="desc-text">${deskripsiFix}</td>
-                <td class="#">
+                <td class="text-center">
                     <a href="edit_produk_admin.html?id=${idBarang}" class="btn-action btn-edit">EDIT</a>
                     <a href="detail_produk_admin.html?id=${idBarang}" class="btn-action btn-detail">DETAIL</a>
                     <button class="btn-action btn-hapus" onclick="hapusProdukByUniqueId('${idBarang}')">HAPUS</button>
@@ -193,22 +225,23 @@
             tbody.appendChild(barisHTML);
         });
 
-        // Simpan ulang modifikasi auto-repair ID jika ada yang berubah
-        localStorage.setItem('daftar_produk', JSON.stringify(daftarProduk));
+        // Hanya panggil setItem jika ada perbaikan ID data lama agar tidak memakan beban performa browser
+        if (adaPerubahanID) {
+            localStorage.setItem('daftar_produk', JSON.stringify(daftarProduk));
+        }
     }
 
-    // PERBAIKAN SELEKTOR HAPUS: Mencari berdasarkan nilai ID murni (Aman dari bug shifting baris array)
     function hapusProdukByUniqueId(idTarget) {
         if (confirm("Apakah Anda yakin ingin menghapus produk ini dari daftar? Data pada halaman katalog pelanggan juga akan otomatis terupdate.")) {
             let daftarProduk = JSON.parse(localStorage.getItem('daftar_produk')) || [];
             
-            // Cari index baris data yang memiliki nilai properti id sama dengan idTarget
+            // Pencarian indeks berdasarkan string perbandingan agar lebih akurat
             const indexData = daftarProduk.findIndex(item => item.id.toString() === idTarget.toString());
             
             if (indexData !== -1) {
-                daftarProduk.splice(indexData, 1); // Hapus 1 baris item terpilih
+                daftarProduk.splice(indexData, 1);
                 localStorage.setItem('daftar_produk', JSON.stringify(daftarProduk));
-                muatSemuaProduk(); // Render ulang tabel secara instan
+                muatSemuaProduk(); // Muat ulang render tabel secara langsung
             } else {
                 alert("Gagal menghapus! Data ID Produk tidak dikenali.");
             }
@@ -216,13 +249,10 @@
     }
 
     window.onload = function() {
-        // Sinkronisasi Nama Admin Aktif dari Session Storage
         const namaUser = sessionStorage.getItem('current_user');
         if (namaUser) {
             document.getElementById('user-aktif').innerText = namaUser;
         }
-
-        // Panggil fungsi render data utama
         muatSemuaProduk();
     };
 </script>
