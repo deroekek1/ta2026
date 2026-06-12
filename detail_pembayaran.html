@@ -11,17 +11,22 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
         
-        /* Sidebar Flex Layout */
+        /* ==================== SINKRONISASI PERFECT SIDEBAR ==================== */
         .sidebar {
             width: 250px; height: 100vh; background-color: #f7ff00;
             position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); overflow-y: auto;
         }
-        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; }
+        .sidebar-brand { 
+            text-align: center; font-weight: 800; font-size: 1.1rem; 
+            padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; 
+            border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000;
+        }
+        .sidebar-menu-container { margin-top: 20px; }
         .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
-        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
-        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; color: #000; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); color: #000; }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
 
         /* Main Content & Top Bar */
@@ -37,7 +42,7 @@
         /* Header Title Melengkung Kuning */
         .header-title { 
             background-color: #f7ff00; padding: 12px; text-align: center; 
-            font-weight: 800; border-radius: 10px; width: 50%; 
+            font-weight: 800; border-radius: 10px; width: 100%; max-width: 500px; 
             margin: 0 auto 30px; text-transform: uppercase; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
             color: #000;
@@ -50,12 +55,42 @@
         
         /* Table Detail Layout Vertikal */
         .table-detail { width: 100%; border-collapse: collapse; border: 1px solid #ccc; margin-bottom: 25px; }
-        .table-detail th { background-color: #fff; color: #000; font-weight: 700; padding: 15px 20px; text-align: left; vertical-align: top; border: 1px solid #ccc; width: 30%; }
+        .table-detail th { background-color: #f8fafc; color: #000; font-weight: 700; padding: 15px 20px; text-align: left; vertical-align: top; border: 1px solid #ccc; width: 30%; }
         .table-detail td { padding: 15px 20px; border: 1px solid #ccc; font-size: 0.95rem; color: #333; vertical-align: top; }
         
         /* Button Kembali */
-        .btn-back { background-color: #000; color: #f7ff00; font-weight: 700; border: none; padding: 10px 25px; border-radius: 8px; text-decoration: none; display: inline-block; transition: 0.3s; text-transform: uppercase; font-size: 0.9rem; }
+        .btn-back { background-color: #000; color: #f7ff00; font-weight: 700; border: none; padding: 12px 30px; border-radius: 8px; text-decoration: none; display: inline-block; transition: 0.3s; text-transform: uppercase; font-size: 0.9rem; text-align: center; }
         .btn-back:hover { background-color: #333; color: #fff; }
+
+        /* ==========================================================================
+           RESPONSIVE MOBILE BREAKDOWN FOR SMARTPHONES (Layar < 768px)
+           ========================================================================== */
+        @media (max-width: 767.98px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 15px 0 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .sidebar-brand, .logo-container { display: none; }
+            
+            .sidebar nav { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 10px; }
+            .nav-link { padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; background-color: rgba(0,0,0,0.03); color: #000; }
+            .nav-link i { margin-right: 5px; font-size: 1rem; color: #000; }
+            
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 10px 15px; flex-direction: column; gap: 8px; text-align: center; }
+            .logo-top-left h5 { font-size: 0.95rem; }
+            
+            .content-body { padding: 15px; }
+            .header-title { font-size: 1.1rem; margin-bottom: 20px; padding: 10px; }
+            .panel-body { padding: 20px 15px; }
+
+            /* Mengubah baris tabel detail menjadi susunan vertikal penuh di HP Android */
+            .table-detail th, .table-detail td { display: block; width: 100%; border: none; padding: 10px 5px; }
+            .table-detail tr { display: block; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 5px; }
+            .table-detail tr:last-child { border-bottom: none; }
+            .table-detail th { background-color: transparent; font-size: 0.85rem; color: #64748b; padding-bottom: 0; }
+            .table-detail td { font-weight: 600; padding-top: 2px; }
+
+            /* Tombol Kembali Menjadi Lebar Penuh */
+            .btn-back { width: 100%; padding: 14px; }
+        }
     </style>
 </head>
 <body>
@@ -63,7 +98,7 @@
 <div class="sidebar shadow">
     <div>
         <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
-        <nav class="nav flex-column">
+        <nav class="nav flex-column sidebar-menu-container">
             <a class="nav-link" href="index_admin.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a class="nav-link" href="produk_admin.html"><i class="bi bi-box-seam"></i> Produk</a>
             <a class="nav-link active" href="pembelian_admin.html"><i class="bi bi-cart3"></i> Pembelian</a>
@@ -73,7 +108,7 @@
         </nav>
     </div>
     <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
@@ -131,10 +166,8 @@
 <script>
     window.onload = function() {
         // 1. Sinkronisasi Nama Admin Aktif
-        const namaUser = sessionStorage.getItem('current_user');
-        if (namaUser) {
-            document.getElementById('user-aktif').innerText = namaUser;
-        }
+        const namaUser = sessionStorage.getItem('current_user') || "Admin";
+        document.getElementById('user-aktif').innerText = namaUser;
 
         // 2. Ambil parameter ID dari URL (?id=X)
         const urlParams = new URLSearchParams(window.location.search);
@@ -173,11 +206,11 @@
                 }
             } else {
                 alert("Data pembelian tidak ditemukan!");
-                window.location.href = "pembelian_admin.php";
+                window.location.href = "pembelian_admin.html";
             }
         } else {
             alert("Tidak ada transaksi yang dipilih!");
-            window.location.href = "pembelian_admin.php";
+            window.location.href = "pembelian_admin.html";
         }
     };
 </script>
