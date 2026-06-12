@@ -10,20 +10,20 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
         
-        /* Sidebar Flex Layout */
+        /* Sidebar Default (Desktop) */
         .sidebar {
             width: 250px; height: 100vh; background-color: #f7ff00;
             position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); overflow-y: auto;
         }
-        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; }
+        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000; }
         .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
         .nav-link i { font-size: 1.3rem; margin-right: 15px; }
         .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
 
-        /* Main Content & Top Bar */
+        /* Main Content & Top Bar Default (Desktop) */
         .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
         .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
         .logo-top-left { display: flex; align-items: center; gap: 15px; }
@@ -38,12 +38,12 @@
             background-color: #f7ff00; padding: 12px; text-align: center; 
             font-weight: 800; border-radius: 10px; width: 50%; 
             margin: 0 auto 30px; text-transform: uppercase; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px; color: #000;
         }
 
-        /* Form Card Style */
+        /* Form Panel Box */
         .form-panel { background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; }
-        .form-panel-header { background-color: #d1d1d1; padding: 12px 20px; font-weight: 700; font-size: 1.1rem; border-bottom: 1px solid #ccc; }
+        .form-panel-header { background-color: #d1d1d1; padding: 12px 20px; font-weight: 700; font-size: 1.1rem; border-bottom: 1px solid #ccc; color: #000; }
         .form-panel-body { padding: 30px; }
 
         .form-label { font-weight: 600; font-size: 0.9rem; color: #333; margin-bottom: 8px; }
@@ -51,7 +51,8 @@
         .form-control:focus, .form-select:focus { border-color: #5a5a00; box-shadow: 0 0 0 0.2rem rgba(90, 90, 0, 0.15); }
 
         /* Preview Gambar Style */
-        .preview-img-container { margin-top: 10px; padding: 10px; background: #f9f9f9; border: 1px dashed #ccc; border-radius: 8px; display: inline-block; }
+        .preview-img-container { margin-top: 15px; padding: 15px; background: #f9f9f9; border: 1px dashed #ccc; border-radius: 8px; display: block; }
+        .img-live-preview { max-height: 180px; object-fit: contain; border-radius: 6px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 
         /* Buttons Style */
         .btn-custom { font-weight: 700; padding: 10px 25px; border-radius: 8px; border: none; transition: 0.3s; text-transform: uppercase; font-size: 0.9rem; }
@@ -59,6 +60,27 @@
         .btn-save:hover { background-color: #333; color: #fff; }
         .btn-cancel { background-color: #6c757d; color: #fff; text-decoration: none; display: inline-block; text-align: center; }
         .btn-cancel:hover { background-color: #5a6268; color: #fff; }
+
+        /* PERBAIKAN RESPONSIVE TIMBAL BALIK HANDPHONE */
+        @media (max-width: 767.98px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 15px 0 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .sidebar-brand, .logo-container { display: none; } 
+            
+            .sidebar nav { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 10px; }
+            .nav-link { padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; background-color: rgba(0,0,0,0.03); }
+            .nav-link i { margin-right: 5px; font-size: 1rem; }
+            
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 10px 15px; flex-direction: column; gap: 8px; text-align: center; }
+            .logo-top-left h5 { font-size: 0.95rem; }
+            
+            .content-body { padding: 15px; }
+            .header-title { width: 90%; font-size: 1.2rem; margin-bottom: 20px; }
+            .form-panel-body { padding: 20px; }
+            
+            .col-md-12.d-flex { flex-direction: column; gap: 10px !important; }
+            .btn-custom { width: 100%; padding: 12px; }
+        }
     </style>
 </head>
 <body>
@@ -76,14 +98,14 @@
         </nav>
     </div>
     <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
 <div class="main-content">
     <div class="top-bar shadow-sm">
         <div class="logo-top-left">
-            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55" alt="Logo Mini">
             <h5>KOKO CETAK UV PRINTING</h5>
         </div>
         <div class="admin-text">
@@ -99,7 +121,7 @@
             <div class="form-panel-body">
                 
                 <form id="formTambahProduk" onsubmit="prosesSimpanProduk(event)">
-                    <div class="row g-4">
+                    <div class="row g-3">
                         <div class="col-md-8">
                             <label class="form-label" for="nama_barang">Nama Barang</label>
                             <input type="text" id="nama_barang" class="form-control" placeholder="Masukkan nama barang produk..." required>
@@ -113,11 +135,13 @@
                         <div class="col-md-12">
                             <label class="form-label" for="foto_barang">Upload Gambar Produk</label>
                             <input type="file" id="foto_barang" class="form-control" accept="image/*" required>
-                            <small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Pilih file gambar produk (sistem simulasi akan membaca nama file dari komputer Anda).</small>
+                            <small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Gunakan gambar format JPG/PNG berkualitas baik untuk performa visual maksimal.</small>
                             
                             <div class="preview-img-container d-none" id="containerPreview">
-                                <span class="d-block mb-1 fw-semibold text-secondary" style="font-size: 0.8rem;">File Terpilih:</span>
-                                <span id="textPreviewNamaFile" class="badge bg-secondary"></span>
+                                <span class="d-block mb-1 fw-semibold text-secondary" style="font-size: 0.85rem;">Preview Gambar Terpilih:</span>
+                                <div id="textPreviewNamaFile" class="badge bg-secondary mb-2"></div>
+                                <br>
+                                <img id="imgLivePreviewElement" src="" alt="Pratinjau Gambar" class="img-live-preview">
                             </div>
                         </div>
 
@@ -143,40 +167,35 @@
 </div>
 
 <script>
-    // Fungsi Menyimpan Produk ke LocalStorage
+    // Variabel global penampung data String Base64 Gambar
+    let stringBase64Gambar = "";
+
     function prosesSimpanProduk(event) {
-        event.preventDefault(); // Menghentikan submit bawaan form HTML agar dialihkan ke JS
+        event.preventDefault();
 
         const nama = document.getElementById('nama_barang').value;
         const harga = document.getElementById('harga_barang').value;
-        const inputFile = document.getElementById('foto_barang');
         const deskripsi = document.getElementById('deskripsi_barang').value;
 
-        if (!inputFile.files || inputFile.files.length === 0) {
-            alert("Harap pilih/upload file gambar produk terlebih dahulu!");
+        if (!stringBase64Gambar) {
+            alert("Harap pilih/upload file gambar produk terlebih dahulu sampai preview muncul!");
             return;
         }
 
-        const namaFileFoto = inputFile.files[0].name;
-
-        // PERBAIKAN STRUKTUR DATA: 
-        // 1. Harga disimpan dalam tipe Angka/Integer (bukan teks string 'Rp.')
-        // 2. Properti gambar disamakan dengan file pelanggan dan admin tabel ('gambar' & 'foto' diisi ganda agar aman)
+        // Simpan stringBase64Gambar langsung ke properti gambar objek produkBaru
         const produkBaru = {
-            id: Date.now(), // ID Unik berbasis waktu agar mempermudah fitur Edit/Detail/Hapus
+            id: Date.now(), 
             nama: nama,
             harga: parseInt(harga), 
-            gambar: "img/" + namaFileFoto,
-            foto: "img/" + namaFileFoto,
+            gambar: stringBase64Gambar, 
+            foto: stringBase64Gambar,
             deskripsi: deskripsi,
             rating: "5.0",
             terjual: "0"
         };
 
-        // PERBAIKAN KEY STORAGE: Menggunakan 'daftar_produk' agar sinkron secara langsung
         let arrayProduk = JSON.parse(localStorage.getItem('daftar_produk'));
         
-        // Jika database 'daftar_produk' belum ada sama sekali di browser, kita inisialisasi dulu dengan data default E-money
         if (!arrayProduk) {
             const produkAwalSistem = [
                 {
@@ -193,32 +212,43 @@
             arrayProduk = produkAwalSistem;
         }
         
-        // Tambahkan data input baru ke dalam array
         arrayProduk.push(produkBaru);
-        
-        // Simpan kembali array data yang utuh ke LocalStorage
         localStorage.setItem('daftar_produk', JSON.stringify(arrayProduk));
 
         alert("Produk baru '" + nama + "' berhasil ditambahkan ke sistem!");
-        window.location.href = "produk_admin.php"; // Pindah otomatis ke halaman data produk admin
+        window.location.href = "produk_admin.html"; 
     }
 
     window.onload = function() {
-        // Sinkronisasi Nama Admin Aktif dari Session Storage
         const namaUser = sessionStorage.getItem('current_user');
         if (namaUser) {
             document.getElementById('user-aktif').innerText = namaUser;
         }
 
-        // Listener untuk mendeteksi perubahan upload file gambar (Real-time preview text)
+        // Fungsi membaca file gambar dan mengubahnya menjadi String Base64 secara asinkronus
         document.getElementById('foto_barang').addEventListener('change', function(e) {
             const container = document.getElementById('containerPreview');
             const text = document.getElementById('textPreviewNamaFile');
+            const imgPreview = document.getElementById('imgLivePreviewElement');
+
             if (this.files && this.files.length > 0) {
-                container.classList.remove('d-none');
-                text.innerText = this.files[0].name;
+                const fileDipilih = this.files[0];
+                text.innerText = fileDipilih.name;
+
+                // Memanfaatkan API FileReader bawaan browser
+                const pembacaFile = new FileReader();
+                pembacaFile.onload = function(eventHasil) {
+                    // Hasil konversi berupa Data URL Base64 disimpan ke variabel global & di-render ke tag <img>
+                    stringBase64Gambar = eventHasil.target.result;
+                    imgPreview.src = stringBase64Gambar;
+                    container.classList.remove('d-none');
+                };
+                
+                pembacaFile.readAsDataURL(fileDipilih);
             } else {
                 container.classList.add('d-none');
+                stringBase64Gambar = "";
+                imgPreview.src = "";
             }
         });
     };
