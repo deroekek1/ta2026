@@ -17,12 +17,13 @@
             width: 250px; height: 100vh; background-color: #f7ff00;
             position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); overflow-y: auto;
         }
         .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000; }
+        .sidebar-menu-container { margin-top: 20px; }
         .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
-        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
-        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; color: #000; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); color: #000; }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
 
         /* Main Content & Top Bar */
@@ -38,7 +39,7 @@
         /* Header Title Melengkung Kuning */
         .header-title { 
             background-color: #f7ff00; padding: 12px; text-align: center; 
-            font-weight: 800; border-radius: 10px; width: 50%; 
+            font-weight: 800; border-radius: 10px; width: 100%; max-width: 500px; 
             margin: 0 auto 30px; text-transform: uppercase; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
             color: #000;
@@ -65,7 +66,7 @@
         .btn-cetak { background-color: #28a745; color: #fff; font-weight: 700; font-size: 0.9rem; border: none; padding: 10px 20px; border-radius: 6px; text-transform: uppercase; text-decoration: none; display: inline-block; text-align: center; }
         .btn-cetak:hover { background-color: #218838; color: #fff; }
         
-        /* TOMBOL EXCEL BARU */
+        /* TOMBOL EXCEL */
         .btn-excel { background-color: #1d6f42; color: #fff; font-weight: 700; font-size: 0.9rem; border: none; padding: 10px 20px; border-radius: 6px; text-transform: uppercase; text-decoration: none; display: inline-block; text-align: center; }
         .btn-excel:hover { background-color: #155231; color: #fff; }
 
@@ -73,7 +74,28 @@
         .page-item.active .page-link { background-color: #000 !important; border-color: #000 !important; color: #f7ff00 !important; }
         .page-link { color: #000; }
 
-        /* ==================== PRINT MEDIA STYLING (ANTI-BERANTAKAN) ==================== */
+        /* ==================== SCREEN RESPONSIVE BREAKDOWN (SMARTPHONES) ==================== */
+        @media (max-width: 767.98px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 15px 0 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .sidebar-brand, .logo-container { display: none; }
+            
+            .sidebar nav { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 10px; }
+            .nav-link { padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; background-color: rgba(0,0,0,0.03); }
+            .nav-link i { margin-right: 5px; font-size: 1rem; }
+            
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 10px 15px; flex-direction: column; gap: 8px; text-align: center; }
+            .logo-top-left h5 { font-size: 0.95rem; }
+            
+            .content-body { padding: 15px; }
+            .header-title { font-size: 1.1rem; margin-bottom: 20px; padding: 10px; }
+            .panel-body { padding: 15px; }
+            
+            #formFilter .d-flex { flex-direction: column; gap: 10px !important; }
+            #formFilter button, #formFilter a { width: 100%; }
+        }
+
+        /* ==================== PRINT MEDIA STYLING ==================== */
         @media print {
             body { background-color: #fff; color: #000; font-size: 12px; }
             .sidebar, .top-bar, #formFilter, .dataTables_length, .dataTables_filter, .dataTables_info, .dataTables_paginate, hr {
@@ -95,7 +117,7 @@
 <div class="sidebar shadow">
     <div>
         <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
-        <nav class="nav flex-column">
+        <nav class="nav flex-column sidebar-menu-container">
             <a class="nav-link" href="index_admin.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a class="nav-link" href="produk_admin.html"><i class="bi bi-box-seam"></i> Produk</a>
             <a class="nav-link" href="pembelian_admin.html"><i class="bi bi-cart3"></i> Pembelian</a>
@@ -105,7 +127,7 @@
         </nav>
     </div>
     <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
@@ -126,17 +148,17 @@
         <div class="panel-box">
             <div class="panel-header">Filter Periode Laporan</div>
             <div class="panel-body">
-                <form id="formFilter" class="row g-3 align-items-end">
+                <form id="formFilter" class="row g-3 align-items-end" onsubmit="event.preventDefault(); filterSimulasi();">
                     <div class="col-md-3">
                         <label class="form-label fw-semibold" for="tgl_mulai">Tanggal Mulai</label>
-                        <input type="date" id="tgl_mulai" class="form-control">
+                        <input type="date" id="tgl_mulai" class="form-control" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-semibold" for="tgl_selesai">Tanggal Selesai</label>
-                        <input type="date" id="tgl_selesai" class="form-control">
+                        <input type="date" id="tgl_selesai" class="form-control" required>
                     </div>
                     <div class="col-md-6 d-flex gap-2">
-                        <button type="button" onclick="filterSimulasi()" class="btn-filter flex-grow-1"><i class="bi bi-funnel-fill me-1"></i> Filter</button>
+                        <button type="submit" class="btn-filter flex-grow-1"><i class="bi bi-funnel-fill me-1"></i> Filter</button>
                         <button type="button" onclick="exportKeExcel()" class="btn-excel"><i class="bi bi-file-earmark-excel-fill me-1"></i> Excel</button>
                         <button type="button" onclick="window.print()" class="btn-cetak"><i class="bi bi-printer-fill me-1"></i> Cetak</button>
                     </div>
@@ -197,7 +219,7 @@
     let dataTerfilterGlobal = []; 
 
     $(document).ready(function () {
-        // 1. Inisialisasi awal DataTables Engine secara permanen
+        // 1. Inisialisasi awal DataTables Engine
         dTable = $('#tabelLaporan').DataTable({
             "pageLength": 5, 
             "lengthMenu": [5, 10, 25, 50],
@@ -210,9 +232,7 @@
             }
         });
 
-        let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
-
-        // 2. Pasang Tanggal Default Otomatis (Awal bulan s/d hari ini)
+        // 2. Set Tanggal Default Otomatis (Awal bulan s/d hari ini)
         const hariIni = new Date();
         const tahun = hariIni.getFullYear();
         const bulan = String(hariIni.getMonth() + 1).padStart(2, '0');
@@ -221,15 +241,14 @@
         document.getElementById('tgl_mulai').value = `${tahun}-${bulan}-01`;
         document.getElementById('tgl_selesai').value = `${tahun}-${bulan}-${tanggalHariIni}`;
 
-        // 3. Muat Data Utama
-        dataTerfilterGlobal = [...daftarPembelian]; 
-        renderDataKeTabel(dataTerfilterGlobal);
+        // 3. Terapkan SINKRONISASI FILTER AWAL saat halaman pertama kali dimuat
+        filterSimulasi();
 
         const namaUser = sessionStorage.getItem('current_user') || "Admin";
         document.getElementById('user-aktif').innerText = namaUser;
     });
 
-    // 4. Proses Rendering Menggunakan DataTables API Row.Add (Lebih Stabil & Cepat)
+    // 4. Proses Rendering Menggunakan DataTables API
     function renderDataKeTabel(dataArray) {
         hitungStatistik(dataArray);
 
@@ -246,14 +265,13 @@
             } else if (statusAmandemen === 'dibatalkan') {
                 badgeClass = 'bg-danger text-white';
             } else if (statusAmandemen === 'sudah kirim bukti') {
-                badgeClass = 'bg-info text-white';
+                badgeClass = 'bg-info text-black';
             }
 
             const namaPelanggan = item.nama ? item.nama : '-';
             const tanggalTransaksi = item.tanggal ? item.tanggal : '-';
             const totalBayar = item.total ? item.total : 'Rp 0';
 
-            // Masukkan data baris demi baris lewat API resmi DataTables
             dTable.row.add([
                 `<div class="text-center fw-bold">${nomor}</div>`,
                 `<div><i class="bi bi-person-fill me-2 text-secondary"></i>${namaPelanggan}</div>`,
@@ -263,11 +281,12 @@
             ]);
         });
 
-        // Gambar ulang visualisasi tabel
+        // Gambar ulang visualisasi tabel & sesuaikan kolom agar tidak menyusut
         dTable.draw(false);
+        dTable.columns.adjust();
     }
 
-    // 5. Hitung Statistik dengan Sistem Penanganan String Null-Safety
+    // 5. Hitung Statistik Omset & Jumlah Transaksi Selesai
     function hitungStatistik(data) {
         let totalOmset = 0;
         let jumlahSukses = 0;
@@ -275,7 +294,6 @@
         data.forEach(item => {
             if (item.status && item.status.toLowerCase().trim() === "selesai") {
                 jumlahSukses++;
-                // Casting ke String terlebih dahulu untuk menghindari crash jika data bertipe integer murni
                 const totalString = item.total ? String(item.total) : "0";
                 const angkaMurni = parseInt(totalString.replace(/[^0-9]/g, '')) || 0;
                 totalOmset += angkaMurni;
@@ -316,7 +334,7 @@
         return new Date(year, month, day);
     }
 
-    // 7. Aksi Filter Data
+    // 7. Aksi Filter Berdasarkan Rentang Input Tanggal
     function filterSimulasi() {
         const tglMulai = document.getElementById('tgl_mulai').value;
         const tglSelesai = document.getElementById('tgl_selesai').value;
