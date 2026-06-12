@@ -12,12 +12,12 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
         
-        /* Sidebar Flex Layout - DISAMAKAN DENGAN LAPORAN */
+        /* Sidebar Default (Desktop) */
         .sidebar {
             width: 250px; height: 100vh; background-color: #f7ff00;
             position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); overflow-y: auto;
         }
         .sidebar-brand { 
             text-align: center; font-weight: 800; font-size: 1.1rem; 
@@ -25,11 +25,11 @@
             border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000;
         }
         .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
-        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
-        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; color: #000; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); color: #000; }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
 
-        /* Main Content & Top Bar */
+        /* Main Content & Top Bar Default (Desktop) */
         .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
         .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
         .logo-top-left { display: flex; align-items: center; gap: 15px; }
@@ -56,14 +56,14 @@
         .table-pembelian td { vertical-align: middle; font-size: 0.88rem; color: #475569; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; }
 
         /* Badge Status */
-        .badge-status { padding: 5px 10px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; display: inline-block; }
+        .badge-status { padding: 5px 10px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; display: inline-block; text-align: center; }
         .bg-bukti { background-color: #d1ecf1; color: #0c5460; }
         .bg-batal { background-color: #f8d7da; color: #721c24; }
         .bg-proses { background-color: #fff3cd; color: #856404; }
         .bg-selesai { background-color: #d4edda; color: #155724; }
 
         /* Tombol Aksi */
-        .btn-action { font-size: 0.85rem; font-weight: 600; padding: 5px 12px; border-radius: 4px; transition: 0.2s; text-decoration: none; display: inline-block; text-align: center; border: none; }
+        .btn-action { font-size: 0.85rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; transition: 0.2s; text-decoration: none; display: inline-block; text-align: center; border: none; }
         .btn-dtl { background-color: #17a2b8; color: #fff; }
         .btn-dtl:hover { background-color: #138496; color: #fff; }
         .btn-pay { background-color: #28a745; color: #fff; }
@@ -71,6 +71,80 @@
 
         .page-item.active .page-link { background-color: #000 !important; border-color: #000 !important; color: #f7ff00 !important; }
         .page-link { color: #000; }
+
+        /* ==========================================================================
+           PERBAIKAN RESPONSIVE KHUSUS ANDROID / SMARTPHONE (Layar < 768px)
+           ========================================================================== */
+        @media (max-width: 767.98px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 15px 0 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .sidebar-brand, .logo-container { display: none; } 
+            
+            .sidebar nav { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 10px; }
+            .nav-link { padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; background-color: rgba(0,0,0,0.03); color: #000; }
+            .nav-link i { margin-right: 5px; font-size: 1rem; color: #000; }
+            
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 10px 15px; flex-direction: column; gap: 8px; text-align: center; }
+            .logo-top-left h5 { font-size: 0.95rem; }
+            
+            .content-body { padding: 15px; }
+            .header-title { width: 90%; font-size: 1.2rem; margin-bottom: 20px; }
+            .panel-body { padding: 15px; }
+
+            /* Penataan Kontrol DataTables (Search & Length Menu) di Mobile */
+            .dataTables_wrapper .row { flex-direction: column; gap: 10px; }
+            .dataTables_wrapper .dataTables_length, 
+            .dataTables_wrapper .dataTables_filter { text-align: center !important; }
+            .dataTables_wrapper .dataTables_filter input { width: 100% !important; margin-left: 0 !important; margin-top: 5px; }
+
+            /* Transformasi Tabel Pembelian Menjadi Card Grid Vertikal Berurutan di Layar HP */
+            .table-pembelian, .table-pembelian producers, .table-pembelian tbody, .table-pembelian tr, .table-pembelian td { 
+                display: block; 
+                width: 100% !important; 
+            }
+            .table-pembelian certain { display: none; } /* Sembunyikan Header Kolom Asli */
+            
+            .table-pembelian tr { 
+                background: #fdfdfd;
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                padding: 10px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            }
+            
+            .table-pembelian td { 
+                text-align: left !important; 
+                padding: 6px 8px; 
+                border-bottom: 1px dashed #e2e8f0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .table-pembelian td:last-child { border-bottom: none; padding-top: 10px; justify-content: center; }
+
+            /* Menyisipkan Judul Kolom via Atribut Data-Label Semu */
+            .table-pembelian td::before {
+                font-weight: 700;
+                color: #334155;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                margin-right: 15px;
+            }
+            
+            /* Teks Label Kolom untuk Device Android */
+            .table-pembelian td:nth-of-type(1)::before { content: "No:"; }
+            .table-pembelian td:nth-of-type(2)::before { content: "Pelanggan:"; }
+            .table-pembelian td:nth-of-type(3)::before { content: "Tanggal:"; }
+            .table-pembelian td:nth-of-type(4)::before { content: "Total Pembayaran:"; }
+            .table-pembelian td:nth-of-type(5)::before { content: "Status:"; }
+            .table-pembelian td:nth-of-type(6)::before { content: "Aksi:"; }
+            
+            .table-pembelian td .text-end, .table-pembelian td .text-center { text-align: left !important; padding: 0 !important; }
+            .btn-action { width: 100%; padding: 10px; }
+            .d-flex.gap-1 { width: 100%; flex-direction: column; gap: 8px !important; }
+        }
     </style>
 </head>
 <body>
@@ -88,7 +162,7 @@
         </nav>
     </div>
     <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
@@ -110,7 +184,7 @@
             <div class="panel-header">Data Pembelian Pelanggan</div>
             <div class="panel-body">
                 
-                <div class="table-responsive">
+                <div class="table-responsive" style="border: none;">
                     <table id="tabelPembelian" class="table table-hover table-pembelian">
                         <thead>
                             <tr>
@@ -138,15 +212,12 @@
 
 <script>
     $(document).ready(function () {
-        // 1. Ambil data mentah langsung dari master key data pemesanan pelanggan
         let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
 
-        // 2. Bersihkan space kosong/invalid formatting & pastikan setiap item punya ID transaksi unik
         let dataValid = daftarPembelian.map((item, index) => {
             if (!item.status || item.status.trim() === "") {
                 item.status = "dalam proses"; 
             }
-            // Tambahkan no_pesanan otomatis jika belum ada sebagai parameter ID yang aman
             if (!item.no_pesanan) {
                 item.no_pesanan = "KC-" + (100000 + index);
             }
@@ -154,7 +225,6 @@
         });
         localStorage.setItem('daftar_pembelian_koko', JSON.stringify(dataValid));
 
-        // 3. Inisialisasi DataTables terlebih dahulu
         const tabelData = $('#tabelPembelian').DataTable({
             "pageLength": 5, 
             "lengthMenu": [5, 10, 25, 50],
@@ -167,7 +237,6 @@
             }
         });
 
-        // 4. Inject data secara aman menggunakan DataTables API row.add()
         tabelData.clear(); 
 
         dataValid.forEach((item, index) => {
@@ -183,7 +252,6 @@
             else if(statusSistem === "selesai") { classBadge = "bg-selesai"; }
             else { statusSistem = "dalam proses"; }
 
-            // Menggunakan identitas no_pesanan sebagai ganti index array murni agar link tidak tertukar saat difilter/search
             const idParam = encodeURIComponent(item.no_pesanan);
             
             let tombolAksi = `<a href="detail_pembayaran.html?id=${idParam}" class="btn-action btn-dtl">Detail</a>`;
@@ -197,23 +265,20 @@
                 `;
             }
 
-            // Handling data null/undefined agar tampilan tidak merusak layout tabel
             const namaPelanggan = item.nama ? item.nama : "Tanpa Nama";
             const tanggalTransaksi = item.tanggal ? item.tanggal : "-";
             const totalBayar = item.total ? item.total : "Rp 0";
 
-            // Tambahkan baris data secara resmi ke engine DataTables
             tabelData.row.add([
-                `<div class="text-center fw-bold">${nomor}</div>`,
+                `<div class="fw-bold">${nomor}</div>`,
                 `<div><i class="bi bi-person-fill me-2 text-secondary"></i>${namaPelanggan}</div>`,
-                `<div class="text-center">${tanggalTransaksi}</div>`,
-                `<div class="text-end pe-4 fw-semibold text-danger">${totalBayar}</div>`,
-                `<div class="text-center"><span class="badge-status ${classBadge}">${statusSistem}</span></div>`,
-                `<div class="text-center">${tombolAksi}</div>`
+                `<div>${tanggalTransaksi}</div>`,
+                `<div class="fw-semibold text-danger">${totalBayar}</div>`,
+                `<div><span class="badge-status ${classBadge}">${statusSistem}</span></div>`,
+                `<div>${tombolAksi}</div>`
             ]);
         });
 
-        // Render visual tabel final setelah sinkronisasi array selesai
         tabelData.draw(false);
 
         const namaUser = sessionStorage.getItem('current_user') || "Admin";
