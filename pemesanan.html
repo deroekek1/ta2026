@@ -79,47 +79,22 @@
         /* RESPONSIVE UNTUK SMARTPHONE (ANDROID / IOS)              */
         /* ======================================================== */
         @media (max-width: 991.98px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            .sidebar-overlay.active {
-                display: block;
-            }
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-            }
-            .top-bar {
-                padding: 12px 15px;
-            }
-            .top-bar h5 {
-                font-size: 1rem;
-            }
-            .menu-toggle {
-                display: inline-block;
-            }
-            .header-title {
-                width: 80%;
-                font-size: 1.1rem;
-            }
-            .welcome-user span {
-                display: none;
-            }
-            .order-card {
-                padding: 20px;
-            }
-            .content-body {
-                padding: 20px 15px;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 12px 15px; }
+            .top-bar h5 { font-size: 1rem; }
+            .menu-toggle { display: inline-block; }
+            .header-title { width: 80%; font-size: 1.1rem; }
+            .welcome-user span { display: none; }
+            .order-card { padding: 20px; }
+            .content-body { padding: 20px 15px; }
         }
     </style>
 </head>
 <body>
 
-<!-- Overlay Background di HP -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <div class="sidebar shadow" id="sidebarMenu">
@@ -172,14 +147,7 @@
                             <div class="col-md-12">
                                 <label class="form-label">Pilih Produk</label>
                                 <select id="produk" class="form-select" onchange="hitungOtomatis()">
-                                    <option value="60000">E-money Mandiri 1 Sisi (Rp 60.000)</option>
-                                    <option value="70000">E-money Mandiri 2 Sisi (Rp 70.000)</option>
-                                    <option value="70000">Flazz BCA 1 Sisi (Rp 70.000)</option>
-                                    <option value="80000">Flazz BCA 2 Sisi (Rp 80.000)</option>
-                                    <option value="15000">Tali Lanyard 1 Sisi (Rp 15.000)</option>
-                                    <option value="20000">Tali Lanyard 2 Sisi (Rp 20.000)</option>
-                                    <option value="6000">Kartu PVC 1 Sisi (Rp 6.000)</option>
-                                </select>
+                                    </select>
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label">Jumlah (Qty)</label>
@@ -187,7 +155,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label">Catatan</label>
-                                <textarea id="catatan" class="form-control" rows="3" placeholder="Masukkan Catatan..."></textarea>
+                                <textarea id="catatan" class="form-control" rows="3" placeholder="Masukkan Catatan... (Contoh: Cetak glossy, nama custom: Budi)"></textarea>
                             </div>
                             
                             <div class="col-md-6">
@@ -241,17 +209,65 @@
 </div>
 
 <script>
-    // Fungsi Switcher Buka-Tutup Sidebar di Android
     function toggleSidebar() {
         document.getElementById('sidebarMenu').classList.toggle('active');
         document.getElementById('sidebarOverlay').classList.toggle('active');
     }
 
-    // Variabel global penampung nilai integer murni
     let totalHargaMurni = 0;
 
+    // Fungsi Utama: Mengambil data produk dari localStorage admin dan memasukkannya ke elemen Select Option
+    function sinkronisasiPilihanProduk() {
+        const selectProduk = document.getElementById('produk');
+        let daftarProduk = JSON.parse(localStorage.getItem('daftar_produk')) || [];
+
+        // Jika data di localStorage kosong, berikan opsi cadangan default agar halaman tidak error kosong
+        if (daftarProduk.length === 0) {
+            daftarProduk = [
+                { id: 1, nama: "E-toll Emoney Custom Print", harga: 60000 },
+                { id: 2, nama: "Flazz BCA 1 Sisi", harga: 70000 }
+            ];
+        }
+
+        selectProduk.innerHTML = ""; // Bersihkan data bawaan awal HTML
+
+        daftarProduk.forEach(item => {
+            const namaBarang = item.nama || item.nama_produk || "Produk Tanpa Nama";
+            const hargaBarang = item.harga || 0;
+            
+            // Format teks harga di dalam dropdown
+            const hargaFormatText = new Intl.NumberFormat('id-ID', {
+                style: 'currency', currency: 'IDR', minimumFractionDigits: 0
+            }).format(hargaBarang);
+
+            const option = document.createElement('option');
+            option.value = hargaBarang; // Value bermuatan harga integer murni untuk hitungOtomatis
+            option.setAttribute('data-id', item.id);
+            option.setAttribute('data-nama', namaBarang);
+            option.textContent = `${namaBarang} (${hargaFormatText})`;
+            
+            selectProduk.appendChild(option);
+        });
+
+        // Fitur Tambahan: Membaca parameter URL '?produk_id=...' jika diklik langsung dari katalog produk pelanggan
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetId = urlParams.get('produk_id');
+        
+        if (targetId) {
+            for (let i = 0; i < selectProduk.options.length; i++) {
+                if (selectProduk.options[i].getAttribute('data-id') === targetId.toString()) {
+                    selectProduk.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+    }
+
     function hitungOtomatis() {
-        const harga = parseInt(document.getElementById('produk').value) || 0;
+        const selectProduk = document.getElementById('produk');
+        if (!selectProduk || selectProduk.options.length === 0) return;
+
+        const harga = parseInt(selectProduk.value) || 0;
         const jumlah = parseInt(document.getElementById('qty').value) || 0;
         totalHargaMurni = harga * jumlah;
 
@@ -261,7 +277,7 @@
             minimumFractionDigits: 0
         });
 
-        const formattedPrice = formatter.format(totalHargaMurni).replace(/^(\D+)\s(.*)$/, '$1 $2');
+        const formattedPrice = formatter.format(totalHargaMurni);
 
         document.getElementById('display-subtotal').innerText = formattedPrice;
         document.getElementById('display-total').innerText = formattedPrice;
@@ -272,12 +288,18 @@
     }
 
     function simpanKeRiwayat(event) {
-        event.preventDefault(); // Menghentikan reload halaman bawaan form
+        event.preventDefault(); 
 
         const penerima = document.getElementById('penerima').value;
         const wa = document.getElementById('wa').value;
+        
         const produkElement = document.getElementById('produk');
-        const namaProduk = produkElement.options[produkElement.selectedIndex].text.split(' (')[0];
+        const pilihanTerpilih = produkElement.options[produkElement.selectedIndex];
+        
+        // Ambil nama produk murni yang tersimpan di attribute khusus buatan kita
+        const namaProduk = pilihanTerpilih.getAttribute('data-nama');
+        const idProdukAsli = pilihanTerpilih.getAttribute('data-id');
+
         const qty = parseInt(document.getElementById('qty').value);
         const catatan = document.getElementById('catatan').value;
 
@@ -302,7 +324,6 @@
             });
         };
 
-        // Mengubah visual tombol saat proses konversi file biner berjalan
         const btnKonfirmasi = document.querySelector('.btn-order[onclick="triggerFormSubmit()"]');
         btnKonfirmasi.innerText = "Memproses...";
         btnKonfirmasi.disabled = true;
@@ -311,6 +332,7 @@
             
             const pesananBaruDetail = {
                 no_pesanan: idPesanan,
+                id_produk: idProdukAsli,
                 penerima: penerima,
                 wa: wa,
                 produk: namaProduk,
@@ -335,6 +357,7 @@
             let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
             daftarPembelian.push({
                 no_pesanan: idPesanan,
+                id_produk: idProdukAsli,
                 nama: penerima,
                 wa: wa,
                 produk: namaProduk,
@@ -362,7 +385,8 @@
         document.getElementById('user-aktif').innerText = namaUser;
         document.getElementById('penerima').value = namaUser;
 
-        // Eksekusi kalkulasi harga awal
+        // Jalankan sinkronisasi produk terupdate sebelum kalkulasi harga
+        sinkronisasiPilihanProduk();
         hitungOtomatis();
     };
 </script>
