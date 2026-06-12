@@ -10,12 +10,12 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
         
-        /* Sidebar Flex Layout */
+        /* Sidebar Default (Desktop / Monitor) */
         .sidebar {
             width: 250px; height: 100vh; background-color: #f7ff00;
             position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); overflow-y: auto;
         }
         .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; }
         .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
@@ -23,46 +23,67 @@
         .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
 
-        /* Main Content & Top Bar */
+        /* Main Content Default (Desktop) */
         .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
         .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
         .logo-top-left { display: flex; align-items: center; gap: 15px; }
         .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.1rem; }
         .admin-text { color: #f7ff00; font-size: 0.85rem; }
 
-        /* Content Area */
         .content-body { padding: 30px; }
         
-        /* Header Title Banner */
         .header-title { 
             background-color: #f7ff00; padding: 12px; text-align: center; 
             font-weight: 800; border-radius: 10px; width: 50%; 
             margin: 0 auto 30px; text-transform: uppercase; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
-            color: #000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px; color: #000;
         }
 
-        /* Dashboard Cards Modern Style */
         .card-stat {
-            background-color: #fff; 
-            border-radius: 8px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center;
-            border: none;
-            height: 180px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background-color: #fff; border-radius: 8px; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: none; height: 180px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        .card-stat:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
+        .card-stat:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
         .stat-title { font-weight: 700; margin-bottom: 5px; font-size: 1.1rem; color: #000; }
         .stat-value { font-size: 2rem; font-weight: 800; margin-bottom: 15px; color: #000; }
         .stat-icon i { font-size: 2.5rem; color: #000; }
+
+        /* ==========================================================================
+           UKURAN RESPONSIVE KHUSUS ANDROID / HP (Layar di bawah 768px)
+           ========================================================================== */
+        @media (max-width: 767.98px) {
+            /* Ubah sidebar melayang menjadi relatif di atas */
+            .sidebar {
+                width: 100%; height: auto; position: relative; 
+                padding: 15px 0 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            .sidebar-brand { display: none; } /* Sembunyikan judul teks ganda */
+            
+            /* Jajarkan menu navigasi admin ke samping (horizontal) agar pas di HP */
+            .sidebar nav {
+                flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 10px;
+            }
+            .nav-link {
+                padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; background-color: rgba(0,0,0,0.03);
+            }
+            .nav-link i { margin-right: 5px; font-size: 1rem; }
+            
+            /* Sembunyikan logo bulat raksasa 180px di HP agar tidak memenuhi layar */
+            .logo-container { display: none; } 
+
+            /* Kembalikan ukuran konten utama menjadi full lebar layar handphone */
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 10px 15px; flex-direction: column; gap: 8px; text-align: center; }
+            .logo-top-left h5 { font-size: 0.95rem; }
+            
+            .content-body { padding: 15px; }
+            .header-title { width: 90%; font-size: 1.2rem; margin-bottom: 20px; }
+            .card-stat { height: 140px; padding: 15px; }
+            .stat-value { font-size: 1.6rem; margin-bottom: 5px; }
+            .stat-icon i { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
@@ -81,14 +102,14 @@
     </div>
     
     <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
 <div class="main-content">
     <div class="top-bar shadow-sm">
         <div class="logo-top-left">
-            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55">
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55" alt="Logo Mini">
             <h5>KOKO CETAK UV PRINTING</h5>
         </div>
         <div class="admin-text">
@@ -99,9 +120,7 @@
     <div class="content-body">
         <div class="header-title">DASHBOARD</div>
 
-        <div class="row g-4">
-            <div class="col-md-4">
-                <a href="pelanggan.html" class="text-decoration-none">
+        <div class="row g-3"> <div class="col-6 col-md-4"> <a href="pelanggan.html" class="text-decoration-none">
                     <div class="card card-stat">
                         <div class="stat-title">Pelanggan</div>
                         <div id="jumlah-pelanggan" class="stat-value">0</div>
@@ -112,7 +131,7 @@
                 </a>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-6 col-md-4">
                 <a href="produk_admin.html" class="text-decoration-none">
                     <div class="card card-stat">
                         <div class="stat-title">Produk</div>
@@ -124,8 +143,7 @@
                 </a>
             </div>
 
-            <div class="col-md-4">
-                <a href="pembelian_admin.html" class="text-decoration-none">
+            <div class="col-12 col-md-4"> <a href="pembelian_admin.html" class="text-decoration-none">
                     <div class="card card-stat">
                         <div class="stat-title">Pembelian</div>
                         <div id="jumlah-pembelian" class="stat-value">0</div>
@@ -142,22 +160,17 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     window.onload = function() {
-        // 1. Sinkronisasi Nama Admin Aktif dari Session Storage
         const namaUser = sessionStorage.getItem('current_user');
         if (namaUser) {
             document.getElementById('user-aktif').innerText = namaUser;
         }
 
-        // 2. Ambil & Hitung Jumlah Pelanggan Real-time dari Registrasi (Gunakan Array Kosong jika null)
         const daftarPelanggan = JSON.parse(localStorage.getItem('daftar_pelanggan_koko')) || [];
         document.getElementById('jumlah-pelanggan').innerText = daftarPelanggan.length;
 
-        // 3. Ambil & Hitung Jumlah Produk (Disesuaikan key-nya dengan dashboard pelanggan: 'daftar_produk')
-        // PERBAIKAN: Menghapus "+ 1" agar hitungannya riil sesuai jumlah baris item data
         const daftarProduk = JSON.parse(localStorage.getItem('daftar_produk')) || [];
         document.getElementById('jumlah-produk').innerText = daftarProduk.length;
 
-        // 4. Ambil & Hitung Jumlah Pembelian (Gunakan Array Kosong jika null)
         const daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
         document.getElementById('jumlah-pembelian').innerText = daftarPembelian.length;
     };
