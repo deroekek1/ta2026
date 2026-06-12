@@ -15,9 +15,10 @@
         /* ==================== SINKRONISASI PERFECT SIDEBAR ==================== */
         .sidebar {
             width: 250px; height: 100vh; background-color: #f7ff00;
-            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
+            position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1040;
             display: flex; flex-direction: column; justify-content: space-between;
             box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
         }
         .sidebar-brand { 
             text-align: center; font-weight: 800; font-size: 1.1rem; 
@@ -29,29 +30,33 @@
         .nav-link i { font-size: 1.3rem; margin-right: 15px; }
         .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
-        /* ========================================================================== */
+        
+        /* Hamburger Menu (Sembunyi di Desktop) */
+        .menu-toggle { display: none; background: transparent; border: none; color: #f7ff00; font-size: 1.5rem; cursor: pointer; margin-right: 15px; }
+
+        /* Overlay Background saat Sidebar Aktif di HP */
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1030; }
 
         /* Main Content & Top Bar */
-        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; }
-        .top-bar { background-color: #000; color: #fff; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .logo-top-left { display: flex; align-items: center; gap: 15px; }
+        .main-content { margin-left: 250px; width: calc(100% - 250px); min-height: 100vh; transition: all 0.3s ease; }
+        .top-bar { background-color: #000; color: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
         .top-bar h5 { color: #f7ff00; font-weight: 800; margin: 0; font-size: 1.2rem; }
-        .welcome-user { color: #f7ff00; font-size: 0.85rem; }
+        .welcome-user { color: #f7ff00; font-size: 0.85rem; display: flex; align-items: center; }
 
         /* Content Area */
         .content-body { padding: 30px; }
         .header-title {
             background-color: #f7ff00; padding: 12px; text-align: center; font-weight: 800;
-            border-radius: 10px; width: 100%; margin-bottom: 30px;
+            border-radius: 10px; width: 50%; margin: 0 auto 40px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-transform: uppercase; color: #000;
-            font-size: 1.4rem; letter-spacing: 1px;
+            font-size: 1.3rem; letter-spacing: 1px;
         }
 
         /* Card Layout & Table */
         .panel-box { background: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .table-riwayat { width: 100% !important; border-collapse: collapse; }
-        .table-riwayat th { font-weight: 700; color: #000; font-size: 0.95rem; border-bottom: 2px solid #ccc !important; padding: 12px 10px; text-align: center !important; background-color: #d1d1d1; }
-        .table-riwayat td { vertical-align: middle; font-size: 0.9rem; color: #333; padding: 12px 10px; border-bottom: 1px solid #edf2f7; }
+        .table-riwayat th { font-weight: 700; color: #000; font-size: 0.95rem; border-bottom: 2px solid #ccc !important; padding: 12px 10px; text-align: center !important; background-color: #d1d1d1; white-space: nowrap; }
+        .table-riwayat td { vertical-align: middle; font-size: 0.9rem; color: #333; padding: 12px 10px; border-bottom: 1px solid #edf2f7; white-space: nowrap; }
 
         /* Badge Status & Button */
         .badge-status { padding: 5px 10px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; display: inline-block; }
@@ -60,15 +65,65 @@
         .bg-proses { background-color: #fff3cd; color: #856404; }
         .bg-selesai { background-color: #d4edda; color: #155724; }
         
-        .btn-nota { background-color: #000; color: #f7ff00; font-weight: 700; font-size: 0.8rem; padding: 5px 15px; border-radius: 6px; text-decoration: none; border: 1px solid #000; transition: 0.2s; }
+        .btn-nota { background-color: #000; color: #f7ff00; font-weight: 700; font-size: 0.8rem; padding: 5px 15px; border-radius: 6px; text-decoration: none; border: 1px solid #000; transition: 0.2s; white-space: nowrap; }
         .btn-nota:hover { background-color: #333; color: #fff; border-color: #333; }
         .page-item.active .page-link { background-color: #000 !important; border-color: #000 !important; color: #f7ff00 !important; }
         .page-link { color: #000; }
+
+        /* Customizing Wrapper DataTables Search Box agar Fleksibel */
+        .dataTables_wrapper .dataTables_filter input { border-radius: 6px; padding: 4px 8px; border: 1px solid #ccc; }
+        
+        /* FIX PERFECT: Mengatasi dropdown ganda dan bertumpuk */
+        .dataTables_wrapper .dataTables_length select { 
+            display: inline-block !important;
+            width: auto !important; 
+            padding: 6px 36px 6px 12px !important; /* Beri ruang kanan yang cukup untuk panah */
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 6px; 
+            border: 1px solid #ccc;
+            background-color: #fff;
+            
+            /* Sembunyikan panah default bawaan browser agar tidak ganda */
+            appearance: none !important; 
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            
+            /* Gunakan panah kustom Bootstrap/DataTables via background */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 12px center !important; /* Geser panah agak ke kiri dari tepi */
+            background-size: 12px 10px !important;
+        }
+
+        /* ======================================================== */
+        /* RESPONSIVE UNTUK SMARTPHONE (ANDROID / IOS)              */
+        /* ======================================================== */
+        @media (max-width: 991.98px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 12px 15px; }
+            .top-bar h5 { font-size: 1rem; }
+            .menu-toggle { display: inline-block; }
+            .header-title { width: 80%; font-size: 1.1rem; margin-bottom: 30px; }
+            .welcome-user span { display: none; }
+            .panel-box { padding: 20px 15px; }
+            .content-body { padding: 20px 15px; }
+            
+            /* Penyesuaian Komponen Kontrol DataTables pada Layar Kecil */
+            .dataTables_wrapper .dataTables_length, 
+            .dataTables_wrapper .dataTables_filter { text-align: left !important; margin-bottom: 15px; }
+            .dataTables_wrapper .dataTables_filter input { width: 100% !important; margin-left: 0 !important; margin-top: 5px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="sidebar shadow">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="sidebar shadow" id="sidebarMenu">
     <div>
         <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
         <nav class="nav flex-column sidebar-menu-container">
@@ -79,19 +134,22 @@
             <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-left"></i> LogOut</a>
         </nav>
     </div>
-    <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+    <div class="logo-container d-none d-lg-block">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
 <div class="main-content">
     <div class="top-bar shadow-sm">
-        <div class="logo-top-left">
-            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="55" alt="Logo">
+        <div class="d-flex align-items-center">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <img src="img/logo_koko.png" class="rounded-circle shadow-sm" width="40" alt="Logo">
             <h5>KOKO CETAK UV PRINTING</h5>
         </div>
         <div class="welcome-user">
-            Selamat Datang <span id="user-aktif">Pelanggan</span> <i class="bi bi-person-circle ms-2"></i>
+            <span class="me-1">Selamat Datang, </span> <strong id="user-aktif" style="color: #f7ff00;">Pelanggan</strong> <i class="bi bi-person-circle ms-2" style="font-size: 1.1rem;"></i>
         </div>
     </div>
 
@@ -100,7 +158,7 @@
 
         <div class="panel-box">
             <div class="table-responsive">
-                <table id="tabelRiwayat" class="table table-hover table-riwayat">
+                <table id="tabelRiwayat" class="table table-hover table-riwayat align-middle">
                     <thead>
                         <tr>
                             <th width="5%">No</th>
@@ -124,6 +182,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // Fungsi Switcher Buka-Tutup Sidebar di Smartphone
+    function toggleSidebar() {
+        document.getElementById('sidebarMenu').classList.toggle('active');
+        document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
+
     let dataRenderLokal = [];
 
     $(document).ready(function () {
@@ -136,14 +200,14 @@
         let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
         let riwayatDetail = JSON.parse(localStorage.getItem('riwayat_koko')) || [];
 
-        // 3. Filter Pemesanan Milik Akun yang Sedang Login (Deteksi kecocokan string murni/lebih akurat)
+        // 3. Filter Pemesanan Milik Akun yang Sedang Login
         let pesananSaya = daftarPembelian.filter(item => {
             if (!item.nama) return false;
             const namaOrder = item.nama.toLowerCase().trim();
             return namaOrder === namaLoginLower;
         });
 
-        // 4. Inisialisasi Awal Engine DataTables
+        // 4. Inisialisasi Engine DataTables
         const tabelRiwayatSistem = $('#tabelRiwayat').DataTable({
             "pageLength": 5, 
             "lengthMenu": [5, 10, 25, 50], 
@@ -159,6 +223,13 @@
         // 5. Bersihkan data cache DataTables lama
         tabelRiwayatSistem.clear();
         dataRenderLokal = [];
+
+        // formatter Rupiah
+        const formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        });
 
         // 6. Masukkan data hasil filter ke dalam DataTables menggunakan row.add()
         pesananSaya.forEach((item, index) => {
@@ -183,7 +254,7 @@
                 statusSistem = "dalam proses";
             }
 
-            // Cari kecocokan data detail item di riwayat_koko dengan penanganan anti-error (.replace aman)
+            // Cari kecocokan data detail item di riwayat_koko
             const detailProduk = riwayatDetail.find(p => {
                 if(!p.penerima) return false;
                 const namaPenerima = p.penerima.toLowerCase().trim();
@@ -198,17 +269,20 @@
             const namaItemCetak = item.produk ? `${item.produk} (${item.jumlah || 1} Pcs)` : (detailProduk && detailProduk.produk ? `${detailProduk.produk} (${detailProduk.jumlah || 1} Pcs)` : "Produk Cetak Custom");
             const noPesananFix = item.no_pesanan || (detailProduk && detailProduk.no_pesanan ? detailProduk.no_pesanan : "#KC-" + Math.floor(100000 + Math.random() * 900000));
             const waFix = item.wa || (detailProduk && detailProduk.wa ? detailProduk.wa : "-");
-            const produkFix = item.produk || (detailProduk && detailProduk.produk ? detailProduk.produk : "Produk Cetak Custom");
+            const productosFix = item.produk || (detailProduk && detailProduk.produk ? detailProduk.produk : "Produk Cetak Custom");
             const jumlahFix = item.jumlah || (detailProduk && detailProduk.jumlah ? detailProduk.jumlah : "1");
             const tanggalFix = item.tanggal || "-";
-            const totalFix = item.total || "Rp. 0";
+            
+            // Mengubah integer/string total menjadi Rupiah terformat secara dinamis
+            let totalNilaiRaw = item.total ? String(item.total).replace(/[^0-9]/g, '') : '0';
+            const totalFix = formatter.format(parseInt(totalNilaiRaw)).replace(/^(\D+)\s(.*)$/, '$1 $2');
 
-            // Simpan data fix ke array internal untuk disalurkan ke nota.php
+            // Simpan data fix ke array internal untuk disalurkan ke nota.html
             dataRenderLokal.push({
                 no_pesanan: noPesananFix, 
                 penerima: item.nama, 
                 wa: waFix, 
-                produk: produkFix, 
+                produk: productosFix, 
                 jumlah: jumlahFix, 
                 total: totalFix, 
                 tanggal: tanggalFix, 
@@ -222,7 +296,7 @@
                 `<div class="text-center fw-bold">${nomor}</div>`,
                 `<div class="text-center">${tanggalFix}</div>`,
                 `<div><i class="bi bi-box-seam-fill me-2 text-secondary"></i>${namaItemCetak}</div>`,
-                `<div class="text-end pe-4 fw-semibold text-danger">${totalFix}</div>`,
+                `<div class="text-end fw-semibold text-danger">${totalFix}</div>`,
                 `<div class="text-center"><span class="badge-status ${classBadge}">${statusSistem}</span></div>`,
                 `<div class="text-center"><button type="button" onclick="bukaNota(${internalIndex})" class="btn-nota"><i class="bi bi-file-earmark-text-fill me-1"></i> Nota</button></div>`
             ]);
