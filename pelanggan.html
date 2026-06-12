@@ -13,17 +13,22 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; margin: 0; overflow-x: hidden; }
         
-        /* Sidebar Flex Layout */
+        /* ==================== SINKRONISASI PERFECT SIDEBAR ==================== */
         .sidebar {
             width: 250px; height: 100vh; background-color: #f7ff00;
             position: fixed; left: 0; top: 0; padding: 20px 0; z-index: 1000;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); overflow-y: auto;
         }
-        .sidebar-brand { text-align: center; font-weight: 800; font-size: 1.1rem; padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; border-bottom: 2px solid #000; margin: 0 10px 15px; }
+        .sidebar-brand { 
+            text-align: center; font-weight: 800; font-size: 1.1rem; 
+            padding: 0 10px 10px; text-transform: uppercase; line-height: 1.2; 
+            border-bottom: 2px solid #000; margin: 0 10px 15px; color: #000;
+        }
+        .sidebar-menu-container { margin-top: 20px; }
         .nav-link { padding: 12px 25px; color: #000; font-weight: 600; display: flex; align-items: center; text-decoration: none; transition: 0.3s; }
-        .nav-link i { font-size: 1.3rem; margin-right: 15px; }
-        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); }
+        .nav-link i { font-size: 1.3rem; margin-right: 15px; color: #000; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0,0,0,0.05); color: #000; }
         .logo-container { padding: 20px 0; width: 100%; text-align: center; }
 
         /* Main Content & Top Bar */
@@ -39,7 +44,7 @@
         /* Header Title Melengkung Kuning */
         .header-title { 
             background-color: #f7ff00; padding: 12px; text-align: center; 
-            font-weight: 800; border-radius: 10px; width: 50%; 
+            font-weight: 800; border-radius: 10px; width: 100%; max-width: 500px; 
             margin: 0 auto 30px; text-transform: uppercase; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.4rem; letter-spacing: 1px;
             color: #000;
@@ -56,18 +61,43 @@
         .table-pelanggan td { vertical-align: middle; font-size: 0.88rem; color: #475569; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; }
 
         /* Button Action Minimalis */
-        .btn-action { font-size: 0.85rem; font-weight: 600; padding: 5px 12px; border-radius: 4px; transition: 0.2s; text-decoration: none; display: inline-block; text-align: center; width: 75px; }
+        .btn-action { font-size: 0.85rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; transition: 0.2s; text-decoration: none; display: inline-block; text-align: center; min-width: 75px; border: none; }
         .btn-edit { background-color: #2ecc71; color: #fff; }
         .btn-edit:hover { opacity: 0.85; color: #fff; }
-        .btn-hapus { background-color: #ff0000; color: #fff; border: none; }
+        .btn-hapus { background-color: #ff0000; color: #fff; }
         .btn-hapus:hover { opacity: 0.85; color: #fff; }
         
         /* TOMBOL RESET DATABASE */
         .btn-reset-db { font-weight: 600; font-size: 0.82rem; padding: 6px 15px; border-radius: 6px; text-transform: uppercase; }
 
         /* Custom Override Pagination DataTables */
-        .page-item.active .page-link { background-color: #007bff !important; border-color: #007bff !important; color: #fff !important; }
-        .page-link { color: #007bff; }
+        .page-item.active .page-link { background-color: #000 !important; border-color: #000 !important; color: #f7ff00 !important; }
+        .page-link { color: #000; }
+
+        /* ==========================================================================
+           RESPONSIVE MOBILE BREAKDOWN FOR SMARTPHONES (Layar < 768px)
+           ========================================================================== */
+        @media (max-width: 767.98px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 15px 0 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .sidebar-brand, .logo-container { display: none; }
+            
+            .sidebar nav { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 10px; }
+            .nav-link { padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; background-color: rgba(0,0,0,0.03); color: #000; }
+            .nav-link i { margin-right: 5px; font-size: 1rem; color: #000; }
+            
+            .main-content { margin-left: 0; width: 100%; }
+            .top-bar { padding: 10px 15px; flex-direction: column; gap: 8px; text-align: center; }
+            .logo-top-left h5 { font-size: 0.95rem; }
+            
+            .content-body { padding: 15px; }
+            .header-title { font-size: 1.1rem; margin-bottom: 20px; padding: 10px; }
+            .panel-header { flex-direction: column; gap: 10px; text-align: center; }
+            .panel-body { padding: 15px; }
+            
+            /* Pembungkus DataTables responsive adjustment */
+            .dataTables_wrapper .dataTables_length, 
+            .dataTables_wrapper .dataTables_filter { text-align: center !important; margin-bottom: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -75,7 +105,7 @@
 <div class="sidebar shadow">
     <div>
         <div class="sidebar-brand">SISTEM<br>PEMESANAN</div>
-        <nav class="nav flex-column">
+        <nav class="nav flex-column sidebar-menu-container">
             <a class="nav-link" href="index_admin.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a class="nav-link" href="produk_admin.html"><i class="bi bi-box-seam"></i> Produk</a>
             <a class="nav-link" href="pembelian_admin.html"><i class="bi bi-cart3"></i> Pembelian</a>
@@ -85,7 +115,7 @@
         </nav>
     </div>
     <div class="logo-container">
-        <img src="img/logo_koko.png" class="rounded-circle" width="200" alt="Logo">
+        <img src="img/logo_koko.png" class="rounded-circle" width="180" alt="Logo">
     </div>
 </div>
 
@@ -138,83 +168,89 @@
 
 <script>
     $(document).ready(function () {
-        let daftarPelanggan = JSON.parse(localStorage.getItem('daftar_pelanggan_koko'));
-        
-        if (!daftarPelanggan) {
-            daftarPelanggan = [];
-            localStorage.setItem('daftar_pelanggan_koko', JSON.stringify(daftarPelanggan));
-        }
+        // 1. Sinkronisasi Nama Admin Aktif
+        const namaUser = sessionStorage.getItem('current_user') || "Admin";
+        document.getElementById('user-aktif').innerText = namaUser;
 
-        renderTabelPelanggan(daftarPelanggan);
-
-        $('#tabelPelanggan').DataTable({
+        // 2. Inisialisasi Awal DataTables (Kosong)
+        const table = $('#tabelPelanggan').DataTable({
             "pageLength": 5, 
             "lengthMenu": [5, 10, 25, 50],
             "ordering": false,
             "language": {
-                "search": "Search:",
-                "lengthMenu": "Show _MENU_ entries",
-                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                "paginate": { "previous": "Previous", "next": "Next" }
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                "paginate": { "previous": "Sebelumnya", "next": "Selanjutnya" },
+                "emptyTable": "Belum ada data pelanggan"
             }
         });
 
-        const namaUser = sessionStorage.getItem('current_user');
-        if (namaUser) {
-            document.getElementById('user-aktif').innerText = namaUser;
-        }
+        // 3. Ambil data dari LocalStorage
+        let daftarPelanggan = JSON.parse(localStorage.getItem('daftar_pelanggan_koko')) || [];
+
+        // 4. Masukkan data ke DataTables menggunakan API resmi (.row.add)
+        table.clear(); // Bersihkan sisa render bawaan DOM jika ada
+        
+        daftarPelanggan.forEach((item, index) => {
+            const nomor = index + 1;
+            
+            // Bungkus aksi tombol ke dalam variabel string text
+            const aksiHTML = `
+                <div class="d-flex gap-1 justify-content-center">
+                    <a href="edit_pelanggan.html?id=${index}" class="btn-action btn-edit">EDIT</a>
+                    <button type="button" onclick="hapusPelanggan(${index})" class="btn-action btn-hapus">HAPUS</button>
+                </div>
+            `;
+
+            // Tambahkan baris terstruktur langsung ke memori DataTables
+            table.row.add([
+                `<div class="text-center fw-bold">${nomor}</div>`,
+                item.nama || '-',
+                item.email || '-',
+                `<div class="text-center">${item.telepon || '-'}</div>`,
+                aksiHTML
+            ]);
+        });
+
+        // Gambar ulang struktur tabel agar pencarian dan pagination berfungsi normal
+        table.draw();
     });
 
-    function renderTabelPelanggan(data) {
-        const tbody = document.getElementById('tabel-pelanggan-body');
-        tbody.innerHTML = ""; 
-
-        data.forEach((item, index) => {
-            const nomor = index + 1;
-            const barisHTML = `
-                <tr>
-                    <td class="text-center fw-bold">${nomor}</td>
-                    <td>${item.nama}</td>
-                    <td>${item.email}</td>
-                    <td class="text-center">${item.telepon}</td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <a href="edit_pelanggan.html?id=${index}" class="btn-action btn-edit">EDIT</a>
-                            <button type="button" onclick="hapusPelanggan(${index})" class="btn-action btn-hapus">HAPUS</button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += barisHTML;
-        });
-    }
-
+    // Fungsi Hapus Satu Pelanggan Berantai (Cascading Delete)
     function hapusPelanggan(index) {
         if (confirm("Apakah Anda yakin ingin menghapus data pelanggan ini beserta seluruh riwayat transaksinya?")) {
             let daftarPelanggan = JSON.parse(localStorage.getItem('daftar_pelanggan_koko')) || [];
-            const namaTarget = daftarPelanggan[index].nama;
+            
+            if(daftarPelanggan[index]) {
+                const namaTarget = daftarPelanggan[index].nama;
 
-            daftarPelanggan.splice(index, 1);
-            localStorage.setItem('daftar_pelanggan_koko', JSON.stringify(daftarPelanggan));
+                // Hapus entitas pelanggan
+                daftarPelanggan.splice(index, 1);
+                localStorage.setItem('daftar_pelanggan_koko', JSON.stringify(daftarPelanggan));
 
-            let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
-            daftarPembelian = daftarPembelian.filter(pembelian => pembelian.nama !== namaTarget);
-            localStorage.setItem('daftar_pembelian_koko', JSON.stringify(daftarPembelian));
+                // Bersihkan data transaksi pembelian milik pelanggan tersebut
+                let daftarPembelian = JSON.parse(localStorage.getItem('daftar_pembelian_koko')) || [];
+                daftarPembelian = daftarPembelian.filter(pembelian => pembelian.nama !== namaTarget);
+                localStorage.setItem('daftar_pembelian_koko', JSON.stringify(daftarPembelian));
 
-            let riwayatKoko = JSON.parse(localStorage.getItem('riwayat_koko')) || [];
-            riwayatKoko = riwayatKoko.filter(riwayat => riwayat.penerima !== namaTarget);
-            localStorage.setItem('riwayat_koko', JSON.stringify(riwayatKoko));
+                // Bersihkan data cetak cetak di log riwayat produksi
+                let riwayatKoko = JSON.parse(localStorage.getItem('riwayat_koko')) || [];
+                riwayatKoko = riwayatKoko.filter(riwayat => riwayat.penerima !== namaTarget);
+                localStorage.setItem('riwayat_koko', JSON.stringify(riwayatKoko));
+            }
 
             window.location.reload();
         }
     }
 
-    // TAMBAHAN FUNCTION: Logika mengosongkan LocalStorage agar database simulasi bersih total saat demo program
+    // Fungsi Reset Database Simulasi agar kembali steril saat Demo Sidang / Pengujian
     function resetSemuaData() {
         if (confirm("PERINGATAN! Apakah Anda yakin ingin mengosongkan seluruh data akun pelanggan beserta riwayat transaksinya dari sistem?")) {
-            localStorage.removeItem('daftar_pelanggan_koko');
-            localStorage.removeItem('daftar_pembelian_koko');
-            localStorage.removeItem('riwayat_koko');
+            // Mengeset ulang dengan array kosong (bukan meremove key agar tidak memicu error read properties of null)
+            localStorage.setItem('daftar_pelanggan_koko', JSON.stringify([]));
+            localStorage.setItem('daftar_pembelian_koko', JSON.stringify([]));
+            localStorage.setItem('riwayat_koko', JSON.stringify([]));
             localStorage.removeItem('last_order');
             
             alert("Sistem berhasil dibersihkan! Semua data kembali kosong untuk pengujian baru.");
